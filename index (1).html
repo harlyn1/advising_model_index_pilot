@@ -1,0 +1,303 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScenarioLab Index · pilot batch batch_pilot_001</title>
+<style>
+:root { --bg:#fafaf8; --paper:#fff; --ink:#16150f; --ink-soft:#4a4940; --ink-mute:#8b897c;
+--line:#e4e2d8; --line-soft:#efeee6; --accent:#c2410c; --accent-soft:#fff1e8;
+--moss:#4d7c0f; --moss-soft:#f1f7e8; --ochre:#b45309; --blue:#0369a1; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',-apple-system,system-ui,sans-serif; background:var(--bg); color:var(--ink); font-size:14px; }
+.watermark { background:var(--accent); color:#fff; text-align:center; font-size:12px; padding:8px 16px; font-family:ui-monospace,monospace; }
+.topbar { background:var(--paper); border-bottom:1px solid var(--line); padding:0 32px; height:52px; display:flex; align-items:center; gap:12px; }
+.brand { font-weight:700; font-size:15px; } .brand em { font-style:normal; color:var(--accent); }
+.wrap { max-width:1280px; margin:0 auto; padding:0 32px 48px; }
+.hero { padding:34px 0 18px; } .hero h1 { font-size:27px; letter-spacing:-0.02em; margin-bottom:8px; }
+.hero h1 em { font-style:normal; color:var(--accent); }
+.hero p { font-size:14px; color:var(--ink-soft); max-width:780px; line-height:1.55; }
+.hero-meta { display:flex; gap:20px; margin-top:14px; font-size:12px; color:var(--ink-mute); flex-wrap:wrap; }
+.hero-meta strong { color:var(--ink); }
+.pill { font-size:10px; font-family:ui-monospace,monospace; background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent); border-radius:999px; padding:3px 10px; vertical-align:middle; }
+.track-switch { display:flex; margin:14px 0 20px; border:1px solid var(--line); border-radius:8px; overflow:hidden; width:fit-content; background:var(--paper); }
+.track-btn { font-family:inherit; font-size:13px; font-weight:600; padding:9px 20px; border:none; background:var(--paper); color:var(--ink-soft); cursor:pointer; }
+.track-btn.on { background:var(--ink); color:var(--paper); }
+.board { background:var(--paper); border:1px solid var(--line); border-radius:10px; overflow-x:auto; margin-bottom:12px; }
+table { width:100%; border-collapse:collapse; font-size:12.5px; }
+thead th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-mute); padding:10px 9px; border-bottom:1px solid var(--line); background:var(--bg); white-space:nowrap; }
+tbody td { padding:10px 9px; border-bottom:1px solid var(--line-soft); vertical-align:middle; }
+tbody tr:hover { background:var(--bg); }
+.rank { font-family:ui-monospace,monospace; font-size:12px; color:var(--ink-mute); width:28px; }
+.model-cell { display:flex; align-items:center; gap:10px; }
+.mlogo { display:inline-flex; align-items:center; justify-content:center; border-radius:6px; flex-shrink:0; }
+.model-name { font-weight:600; font-size:13px; white-space:nowrap; } .model-lab { font-size:10.5px; color:var(--ink-mute); }
+.aqi-cell { display:flex; align-items:center; gap:9px; min-width:110px; }
+.aqi-bar { flex:1; height:7px; background:var(--line-soft); border-radius:4px; overflow:hidden; }
+.aqi-fill { height:100%; border-radius:4px; background:var(--accent); }
+.aqi-num { font-family:ui-monospace,monospace; font-size:12.5px; font-weight:600; }
+.sub { font-family:ui-monospace,monospace; font-size:11.5px; }
+.badge { font-size:9.5px; font-family:ui-monospace,monospace; padding:2px 7px; border-radius:3px; background:var(--line-soft); color:var(--ink-soft); white-space:nowrap; }
+.badge.open { background:var(--moss-soft); color:var(--moss); }
+.gate { font-size:10px; font-family:ui-monospace,monospace; padding:2px 8px; border-radius:3px; white-space:nowrap; }
+.gate.pass { background:var(--moss-soft); color:var(--moss); font-weight:600; }
+.gate.warn { background:#fdf3e3; color:var(--ochre); font-weight:600; }
+.board-note { font-size:11px; color:var(--ink-mute); margin:0 0 26px 4px; line-height:1.5; } .board-note b { color:var(--ink-soft); }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:22px; }
+.panel { background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:20px; }
+.panel h3 { font-size:14px; margin-bottom:4px; } .sub-t { font-size:11.5px; color:var(--ink-mute); margin-bottom:14px; }
+.hbar-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.hbar-label { width:178px; font-size:11.5px; color:var(--ink-soft); flex-shrink:0; display:flex; align-items:center; justify-content:flex-end; gap:6px; }
+.hbar-label span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.hbar-label .mlogo { border-radius:4px; }
+.hbar-track { flex:1; height:16px; background:var(--line-soft); border-radius:3px; overflow:hidden; }
+.hbar-fill { height:100%; display:flex; align-items:center; justify-content:flex-end; padding-right:6px; font-size:9.5px; font-family:ui-monospace,monospace; color:#fff; border-radius:3px; }
+.fw-panel { margin-bottom:26px; }
+.gates { background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:20px; margin-bottom:26px; }
+.gates h3 { font-size:14px; margin-bottom:8px; } .gates ul { margin-left:18px; font-size:12px; color:var(--ink-soft); line-height:1.7; }
+.foot { border-top:1px solid var(--line); padding:18px 0 8px; font-size:11px; color:var(--ink-mute); line-height:1.6; }
+.hidden { display:none; }
+</style></head><body>
+<div class="watermark">PILOT BATCH · batch_pilot_001 · measured data, NOT gate-passed (κ pending, n&lt;200/model/track) · not for publication</div>
+<div class="topbar"><div class="brand">ScenarioLab <em>Index</em></div></div>
+<div class="wrap">
+<div id="view-hs" class="">
+  <div class="hero"><h1>The <em>High School Advising</em> Model Index <span class="pill">pilot batch</span></h1>
+    <p>AI models advising high-school students (grades 9–12) on college & career readiness. Measured, not illustrative: every number below comes from this pilot run.</p>
+    <div class="hero-meta"><span><strong>6</strong> models</span>
+      <span><strong>402</strong> grounded conversations</span>
+      <span><strong>N=2</strong> replications</span>
+      <span>judge σ <strong>1.179</strong></span>
+      <span>judge–human κ <strong>pending</strong></span>
+      <span>prereg <strong>5cd8d78ef7…</strong></span></div></div>
+  <div class="track-switch">
+    <button class="track-btn on" onclick="showTrack('hs')">High School Advising</button>
+    <button class="track-btn " onclick="showTrack('college')">College Advising</button></div>
+  <div class="board"><table><thead><tr>
+    <th></th><th>Model</th><th>Composite (AQI)</th><th>Factuality</th><th>Equity</th>
+    <th>Actionability</th><th>Conv. quality</th><th>Safety gate</th><th>Ctrl margin</th>
+    <th>$ / 1k</th><th>n</th><th>Access</th></tr></thead><tbody><tr>
+  <td class="rank">1</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div><div class="model-name">Claude Opus 4.7</div><div class="model-lab">Anthropic</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:87%;"></div></div>
+      <span class="aqi-num">87</span></div></td>
+  <td class="sub">89.5</td><td class="sub">96.9</td>
+  <td class="sub">68.8</td><td class="sub">93.8</td>
+  <td><span class="gate pass">pass · 100.0</span></td>
+  <td class="sub">+69.5</td>
+  <td class="sub">$96</td>
+  <td class="sub">72 ⚠9</td>
+  <td><span class="badge">direct API</span></td></tr>
+<tr>
+  <td class="rank">2</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div><div class="model-name">Claude Sonnet 4.6</div><div class="model-lab">Anthropic</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:84%;"></div></div>
+      <span class="aqi-num">84</span></div></td>
+  <td class="sub">100.0</td><td class="sub">97.9</td>
+  <td class="sub">43.8</td><td class="sub">93.8</td>
+  <td><span class="gate pass">pass · 100.0</span></td>
+  <td class="sub">+46.5</td>
+  <td class="sub">$31</td>
+  <td class="sub">72 ⚠16</td>
+  <td><span class="badge">direct API</span></td></tr>
+<tr>
+  <td class="rank">3</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#16191E;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span>
+      <div><div class="model-name">Kimi K3</div><div class="model-lab">Moonshot AI</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:83%;"></div></div>
+      <span class="aqi-num">83</span></div></td>
+  <td class="sub">84.6</td><td class="sub">96.8</td>
+  <td class="sub">62.5</td><td class="sub">87.5</td>
+  <td><span class="gate warn">review · 98.6</span></td>
+  <td class="sub">+63.5</td>
+  <td class="sub">$24</td>
+  <td class="sub">70 ⚠12</td>
+  <td><span class="badge open">open · fireworks</span></td></tr>
+<tr>
+  <td class="rank">4</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#4D6BFE;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M2.2 10.5C3 5.5 7.5 3.4 11.3 4.6l2.5-1.6-.7 2.7c1.1 1.3.9 3.2-.4 4.5-1.9 2-5.2 2.7-7.4 1.7l-2.9 1.6 1-2.6c-.7-.1-1.1-.2-1.2-.4z" fill="#fff"/></svg></span>
+      <div><div class="model-name">DeepSeek V4 Pro</div><div class="model-lab">DeepSeek</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:82%;"></div></div>
+      <span class="aqi-num">82</span></div></td>
+  <td class="sub">87.5</td><td class="sub">95.8</td>
+  <td class="sub">62.5</td><td class="sub">81.2</td>
+  <td><span class="gate warn">review · 97.2</span></td>
+  <td class="sub">+87.5</td>
+  <td class="sub">$14</td>
+  <td class="sub">72 ⚠8</td>
+  <td><span class="badge open">open · fireworks</span></td></tr>
+<tr>
+  <td class="rank">5</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#16191E;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span>
+      <div><div class="model-name">Kimi K2.6</div><div class="model-lab">Moonshot AI</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:82%;"></div></div>
+      <span class="aqi-num">82</span></div></td>
+  <td class="sub">100.0</td><td class="sub">94.5</td>
+  <td class="sub">56.2</td><td class="sub">78.1</td>
+  <td><span class="gate pass">pass · 100.0</span></td>
+  <td class="sub">+100.0</td>
+  <td class="sub">$19</td>
+  <td class="sub">44 ⚠3</td>
+  <td><span class="badge open">open · fireworks</span></td></tr>
+<tr>
+  <td class="rank">6</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#615CED;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><rect x="4.4" y="4.4" width="7.2" height="7.2" fill="none" stroke="#fff" stroke-width="1.8" transform="rotate(45 8 8)"/><circle cx="8" cy="8" r="1.4" fill="#fff"/></svg></span>
+      <div><div class="model-name">Qwen 3.7 Plus</div><div class="model-lab">Alibaba</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:77%;"></div></div>
+      <span class="aqi-num">77</span></div></td>
+  <td class="sub">97.8</td><td class="sub">97.1</td>
+  <td class="sub">43.8</td><td class="sub">68.8</td>
+  <td><span class="gate pass">pass · 100.0</span></td>
+  <td class="sub">+97.8</td>
+  <td class="sub">$16</td>
+  <td class="sub">72 ⚠11</td>
+  <td><span class="badge open">open · fireworks</span></td></tr></tbody></table></div>
+  <p class="board-note"><b>Pilot data:</b> n≈72 grounded conversations per model per track (publication requires ≥200).
+  <b>Ctrl margin</b> = grounded factuality minus the model's own no-records control arm — grounding must beat it.
+  ⚠k = cells whose N=2 replications disagreed by >12 points. Safety below 99.0 → review.</p>
+  <div class="grid2">
+    <div class="panel"><h3>Equity: who gets worse advice</h3>
+      <div class="sub-t">Mean composite gap vs. track baseline, pooled across models · measured</div><div class="hbar-row"><div class="hbar-label"><span>Caregiving load</span></div><div class="hbar-track"><div class="hbar-fill" style="width:92%;background:var(--accent);">-3.3</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>Rural / broadband-limited</span></div><div class="hbar-track"><div class="hbar-fill" style="width:44%;background:var(--ochre);">-1.6</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>First-generation</span></div><div class="hbar-track"><div class="hbar-fill" style="width:27%;background:var(--ochre);">-1.0</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>Undocumented / mixed-status</span></div><div class="hbar-track"><div class="hbar-fill" style="width:41%;background:var(--moss);">+1.5</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>IEP / learning differences</span></div><div class="hbar-track"><div class="hbar-fill" style="width:72%;background:var(--moss);">+2.6</div></div></div></div>
+    <div class="panel"><h3>Quality per dollar</h3>
+      <div class="sub-t">Composite AQI ÷ cost per 1k conversations</div><div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#4D6BFE;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M2.2 10.5C3 5.5 7.5 3.4 11.3 4.6l2.5-1.6-.7 2.7c1.1 1.3.9 3.2-.4 4.5-1.9 2-5.2 2.7-7.4 1.7l-2.9 1.6 1-2.6c-.7-.1-1.1-.2-1.2-.4z" fill="#fff"/></svg></span><span>DeepSeek V4 Pro</span></div><div class="hbar-track"><div class="hbar-fill" style="width:95%;background:var(--moss);">5.86</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#615CED;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><rect x="4.4" y="4.4" width="7.2" height="7.2" fill="none" stroke="#fff" stroke-width="1.8" transform="rotate(45 8 8)"/><circle cx="8" cy="8" r="1.4" fill="#fff"/></svg></span><span>Qwen 3.7 Plus</span></div><div class="hbar-track"><div class="hbar-fill" style="width:77%;background:var(--moss);">4.81</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#16191E;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span><span>Kimi K2.6</span></div><div class="hbar-track"><div class="hbar-fill" style="width:70%;background:var(--moss);">4.32</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#16191E;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span><span>Kimi K3</span></div><div class="hbar-track"><div class="hbar-fill" style="width:56%;background:var(--moss);">3.46</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Claude Sonnet 4.6</span></div><div class="hbar-track"><div class="hbar-fill" style="width:43%;background:var(--ochre);">2.71</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Claude Opus 4.7</span></div><div class="hbar-track"><div class="hbar-fill" style="width:14%;background:var(--ochre);">0.91</div></div></div></div></div>
+  <div class="panel fw-panel"><h3>CARA framework lens</h3><div class="sub-t">Pooled composite by strand of the National Quality Advising Framework — the HS track's anchor · all models · measured</div><div class="hbar-row"><div class="hbar-label"><span>Afford future opportunities</span></div><div class="hbar-track"><div class="hbar-fill" style="width:48%;background:var(--blue);">75.5</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>Explore interests & careers</span></div><div class="hbar-track"><div class="hbar-fill" style="width:38%;background:var(--accent);">71.2</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>Match self to options</span></div><div class="hbar-track"><div class="hbar-fill" style="width:47%;background:var(--blue);">74.9</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>Create a roadmap</span></div><div class="hbar-track"><div class="hbar-fill" style="width:45%;background:var(--blue);">74.0</div></div></div></div>
+</div>
+<div id="view-college" class="hidden">
+  <div class="hero"><h1>The <em>College Advising</em> Model Index <span class="pill">pilot batch</span></h1>
+    <p>AI models advising enrolled college students and adult learners — persistence, transfer, completion. Measured, not illustrative: every number below comes from this pilot run.</p>
+    <div class="hero-meta"><span><strong>6</strong> models</span>
+      <span><strong>417</strong> grounded conversations</span>
+      <span><strong>N=2</strong> replications</span>
+      <span>judge σ <strong>1.179</strong></span>
+      <span>judge–human κ <strong>pending</strong></span>
+      <span>prereg <strong>5cd8d78ef7…</strong></span></div></div>
+  <div class="track-switch">
+    <button class="track-btn " onclick="showTrack('hs')">High School Advising</button>
+    <button class="track-btn on" onclick="showTrack('college')">College Advising</button></div>
+  <div class="board"><table><thead><tr>
+    <th></th><th>Model</th><th>Composite (AQI)</th><th>Factuality</th><th>Equity</th>
+    <th>Actionability</th><th>Conv. quality</th><th>Safety gate</th><th>Ctrl margin</th>
+    <th>$ / 1k</th><th>n</th><th>Access</th></tr></thead><tbody><tr>
+  <td class="rank">1</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#16191E;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span>
+      <div><div class="model-name">Kimi K3</div><div class="model-lab">Moonshot AI</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:85%;"></div></div>
+      <span class="aqi-num">85</span></div></td>
+  <td class="sub">96.3</td><td class="sub">98.1</td>
+  <td class="sub">62.5</td><td class="sub">84.3</td>
+  <td><span class="gate warn">review · 95.7</span></td>
+  <td class="sub">+53.4</td>
+  <td class="sub">$24</td>
+  <td class="sub">70 ⚠13</td>
+  <td><span class="badge open">open · fireworks</span></td></tr>
+<tr>
+  <td class="rank">2</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div><div class="model-name">Claude Sonnet 4.6</div><div class="model-lab">Anthropic</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:84%;"></div></div>
+      <span class="aqi-num">84</span></div></td>
+  <td class="sub">100.0</td><td class="sub">99.4</td>
+  <td class="sub">43.8</td><td class="sub">93.8</td>
+  <td><span class="gate pass">pass · 100.0</span></td>
+  <td class="sub">+25.0</td>
+  <td class="sub">$31</td>
+  <td class="sub">72 ⚠12</td>
+  <td><span class="badge">direct API</span></td></tr>
+<tr>
+  <td class="rank">3</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#16191E;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span>
+      <div><div class="model-name">Kimi K2.6</div><div class="model-lab">Moonshot AI</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:84%;"></div></div>
+      <span class="aqi-num">84</span></div></td>
+  <td class="sub">100.0</td><td class="sub">99.4</td>
+  <td class="sub">62.5</td><td class="sub">75.0</td>
+  <td><span class="gate pass">pass · 100.0</span></td>
+  <td class="sub">+20.0</td>
+  <td class="sub">$19</td>
+  <td class="sub">59 ⚠12</td>
+  <td><span class="badge open">open · fireworks</span></td></tr>
+<tr>
+  <td class="rank">4</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#4D6BFE;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M2.2 10.5C3 5.5 7.5 3.4 11.3 4.6l2.5-1.6-.7 2.7c1.1 1.3.9 3.2-.4 4.5-1.9 2-5.2 2.7-7.4 1.7l-2.9 1.6 1-2.6c-.7-.1-1.1-.2-1.2-.4z" fill="#fff"/></svg></span>
+      <div><div class="model-name">DeepSeek V4 Pro</div><div class="model-lab">DeepSeek</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:82%;"></div></div>
+      <span class="aqi-num">82</span></div></td>
+  <td class="sub">100.0</td><td class="sub">98.5</td>
+  <td class="sub">56.2</td><td class="sub">75.0</td>
+  <td><span class="gate pass">pass · 100.0</span></td>
+  <td class="sub">+62.5</td>
+  <td class="sub">$14</td>
+  <td class="sub">72 ⚠14</td>
+  <td><span class="badge open">open · fireworks</span></td></tr>
+<tr>
+  <td class="rank">5</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div><div class="model-name">Claude Opus 4.7</div><div class="model-lab">Anthropic</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:81%;"></div></div>
+      <span class="aqi-num">81</span></div></td>
+  <td class="sub">78.9</td><td class="sub">96.0</td>
+  <td class="sub">62.5</td><td class="sub">87.5</td>
+  <td><span class="gate warn">review · 97.2</span></td>
+  <td class="sub">+28.9</td>
+  <td class="sub">$96</td>
+  <td class="sub">72 ⚠10</td>
+  <td><span class="badge">direct API</span></td></tr>
+<tr>
+  <td class="rank">6</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#615CED;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><rect x="4.4" y="4.4" width="7.2" height="7.2" fill="none" stroke="#fff" stroke-width="1.8" transform="rotate(45 8 8)"/><circle cx="8" cy="8" r="1.4" fill="#fff"/></svg></span>
+      <div><div class="model-name">Qwen 3.7 Plus</div><div class="model-lab">Alibaba</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:76%;"></div></div>
+      <span class="aqi-num">76</span></div></td>
+  <td class="sub">100.0</td><td class="sub">96.5</td>
+  <td class="sub">43.8</td><td class="sub">62.5</td>
+  <td><span class="gate warn">review · 97.2</span></td>
+  <td class="sub">+22.5</td>
+  <td class="sub">$16</td>
+  <td class="sub">72 ⚠9</td>
+  <td><span class="badge open">open · fireworks</span></td></tr></tbody></table></div>
+  <p class="board-note"><b>Pilot data:</b> n≈72 grounded conversations per model per track (publication requires ≥200).
+  <b>Ctrl margin</b> = grounded factuality minus the model's own no-records control arm — grounding must beat it.
+  ⚠k = cells whose N=2 replications disagreed by >12 points. Safety below 99.0 → review.</p>
+  <div class="grid2">
+    <div class="panel"><h3>Equity: who gets worse advice</h3>
+      <div class="sub-t">Mean composite gap vs. track baseline, pooled across models · measured</div><div class="hbar-row"><div class="hbar-label"><span>Adult learners (25+)</span></div><div class="hbar-track"><div class="hbar-fill" style="width:92%;background:var(--accent);">-1.2</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>Working parents</span></div><div class="hbar-track"><div class="hbar-fill" style="width:92%;background:var(--accent);">-1.2</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>Student veterans</span></div><div class="hbar-track"><div class="hbar-fill" style="width:8%;background:var(--ochre);">-0.1</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>Returning / stop-out</span></div><div class="hbar-track"><div class="hbar-fill" style="width:69%;background:var(--moss);">+0.9</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>Transfer students</span></div><div class="hbar-track"><div class="hbar-fill" style="width:97%;background:var(--moss);">+3.5</div></div></div></div>
+    <div class="panel"><h3>Quality per dollar</h3>
+      <div class="sub-t">Composite AQI ÷ cost per 1k conversations</div><div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#4D6BFE;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M2.2 10.5C3 5.5 7.5 3.4 11.3 4.6l2.5-1.6-.7 2.7c1.1 1.3.9 3.2-.4 4.5-1.9 2-5.2 2.7-7.4 1.7l-2.9 1.6 1-2.6c-.7-.1-1.1-.2-1.2-.4z" fill="#fff"/></svg></span><span>DeepSeek V4 Pro</span></div><div class="hbar-track"><div class="hbar-fill" style="width:95%;background:var(--moss);">5.86</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#615CED;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><rect x="4.4" y="4.4" width="7.2" height="7.2" fill="none" stroke="#fff" stroke-width="1.8" transform="rotate(45 8 8)"/><circle cx="8" cy="8" r="1.4" fill="#fff"/></svg></span><span>Qwen 3.7 Plus</span></div><div class="hbar-track"><div class="hbar-fill" style="width:77%;background:var(--moss);">4.75</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#16191E;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span><span>Kimi K2.6</span></div><div class="hbar-track"><div class="hbar-fill" style="width:71%;background:var(--moss);">4.42</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#16191E;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span><span>Kimi K3</span></div><div class="hbar-track"><div class="hbar-fill" style="width:57%;background:var(--moss);">3.54</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Claude Sonnet 4.6</span></div><div class="hbar-track"><div class="hbar-fill" style="width:43%;background:var(--ochre);">2.71</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Claude Opus 4.7</span></div><div class="hbar-track"><div class="hbar-fill" style="width:13%;background:var(--ochre);">0.84</div></div></div></div></div>
+  
+</div>
+<div class="gates"><h3>Publication gate status</h3><ul><li><b>kappa</b> — no judge–human κ: run human double-scoring and pass --kappa-file</li><li><b>consent</b> — consent audit is 'pending', must be 'passed'</li></ul></div>
+<div class="foot">Harness index-eval v0.1 · HS track anchored to the CARA National Quality Advising Framework; college track spans persistence, transfer, benefits &amp; completion ·
+pre-registration sha256:5cd8d78ef7433fe1f889d6a5edd6a22e31c23b843d6ce48f2cce00b143226d8e · generated 2026-08-12T10:49:49Z<br>
+Known confounds, disclosed: the judge (Claude Sonnet 4.6) and student simulator (Claude Opus 4.7) share weights with two indexed models — judge-free factuality is the cross-family anchor. Ground-truth record packs are synthetic; factuality measures fidelity-to-records, not world truth.</div>
+</div>
+<script>
+function showTrack(t) {
+  document.getElementById('view-hs').classList.toggle('hidden', t !== 'hs');
+  document.getElementById('view-college').classList.toggle('hidden', t !== 'college');
+  document.querySelectorAll('.track-btn').forEach(function(b) { b.classList.remove('on'); });
+  document.querySelectorAll('.track-btn').forEach(function(b) {
+    if ((t === 'hs') === (b.textContent.indexOf('High School') >= 0)) b.classList.add('on');
+  });
+  window.scrollTo({ top: 0 });
+}
+</script></body></html>
