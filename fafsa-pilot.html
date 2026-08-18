@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScenarioLab Index · FAFSA Document Intelligence · pilot</title>
+<style>
+:root { --bg:#fafaf8; --paper:#fff; --ink:#16150f; --ink-soft:#4a4940; --ink-mute:#8b897c;
+--line:#e4e2d8; --line-soft:#efeee6; --accent:#c2410c; --accent-soft:#fff1e8;
+--moss:#4d7c0f; --moss-soft:#f1f7e8; --ochre:#b45309; --blue:#0369a1; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',-apple-system,system-ui,sans-serif; background:var(--bg); color:var(--ink); font-size:14px; }
+.watermark { background:var(--accent); color:#fff; text-align:center; font-size:12px; padding:8px 16px; font-family:ui-monospace,monospace; }
+.topbar { background:var(--paper); border-bottom:1px solid var(--line); padding:0 32px; height:52px; display:flex; align-items:center; gap:14px; }
+.brand { font-weight:700; font-size:15px; } .brand em { font-style:normal; color:var(--accent); }
+.topbar a { font-size:12.5px; color:var(--ink-soft); text-decoration:none; margin-left:auto; }
+.wrap { max-width:1280px; margin:0 auto; padding:0 32px 48px; }
+.hero { padding:34px 0 18px; } .hero h1 { font-size:27px; letter-spacing:-0.02em; }
+.hero h1 em { font-style:normal; color:var(--accent); }
+.hero p { font-size:14px; color:var(--ink-soft); max-width:800px; line-height:1.55; margin-top:8px; }
+.hero-meta { display:flex; gap:20px; margin-top:14px; font-size:12px; color:var(--ink-mute); flex-wrap:wrap; }
+.hero-meta strong { color:var(--ink); }
+.pill { font-size:10px; font-family:ui-monospace,monospace; background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent); border-radius:999px; padding:3px 10px; vertical-align:middle; }
+.board { background:var(--paper); border:1px solid var(--line); border-radius:10px; overflow-x:auto; margin:18px 0 12px; }
+table { width:100%; border-collapse:collapse; font-size:12.5px; }
+thead th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-mute); padding:10px 10px; border-bottom:1px solid var(--line); background:var(--bg); white-space:nowrap; }
+tbody td { padding:10px 10px; border-bottom:1px solid var(--line-soft); vertical-align:middle; }
+tbody tr:hover { background:var(--bg); }
+.rank { font-family:ui-monospace,monospace; font-size:12px; color:var(--ink-mute); width:28px; }
+.model-cell { display:flex; align-items:center; gap:10px; }
+.mlogo { display:inline-flex; align-items:center; justify-content:center; border-radius:6px; flex-shrink:0; }
+.model-name { font-weight:600; font-size:13px; white-space:nowrap; } .model-lab { font-size:10.5px; color:var(--ink-mute); }
+.aqi-cell { display:flex; align-items:center; gap:9px; min-width:120px; }
+.aqi-bar { flex:1; height:7px; background:var(--line-soft); border-radius:4px; overflow:hidden; }
+.aqi-fill { height:100%; border-radius:4px; background:var(--accent); }
+.aqi-num { font-family:ui-monospace,monospace; font-size:12.5px; font-weight:600; }
+.sub { font-family:ui-monospace,monospace; font-size:11.5px; }
+.badge { font-size:9.5px; font-family:ui-monospace,monospace; padding:2px 7px; border-radius:3px; background:var(--line-soft); color:var(--ink-soft); white-space:nowrap; }
+.badge.open { background:var(--moss-soft); color:var(--moss); }
+.thin { font-size:9.5px; color:var(--ochre); font-family:ui-monospace,monospace; }
+.novision { color:var(--ink-mute); font-style:italic; font-size:12px; }
+.board-note { font-size:11px; color:var(--ink-mute); margin:0 0 26px 4px; line-height:1.5; } .board-note b { color:var(--ink-soft); }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:26px; }
+.panel { background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:20px; }
+.panel h3 { font-size:14px; margin-bottom:4px; } .sub-t { font-size:11.5px; color:var(--ink-mute); margin-bottom:14px; }
+.hbar-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.hbar-label { width:178px; font-size:11.5px; color:var(--ink-soft); flex-shrink:0; display:flex; align-items:center; justify-content:flex-end; gap:6px; }
+.hbar-label span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.hbar-label .mlogo { border-radius:4px; }
+.hbar-track { flex:1; height:16px; background:var(--line-soft); border-radius:3px; overflow:hidden; }
+.hbar-fill { height:100%; display:flex; align-items:center; justify-content:flex-end; padding-right:6px; font-size:9.5px; font-family:ui-monospace,monospace; color:#fff; border-radius:3px; }
+.foot { border-top:1px solid var(--line); padding:18px 0 8px; font-size:11px; color:var(--ink-mute); line-height:1.65; }
+</style></head><body>
+<div class="watermark">PILOT BATCH · FAFSA document intelligence · measured data, calibration run · N=2 · not for publication</div>
+<div class="topbar"><div class="brand">ScenarioLab <em>Index</em></div>
+<a href="./">← Advising Model Index</a></div>
+<div class="wrap">
+  <div class="hero">
+    <h1>Can models fill out the <em>FAFSA</em> from real-world documents? <span class="pill">pilot batch</span></h1>
+    <p>Each model receives a mixed evidence bundle — a tax-return PDF, phone photos of W-2s, pay stubs and benefit
+    letters, and stale historical records — for 12 students spanning four economic situations and three
+    age/dependency profiles, then must complete every FAFSA field. Scoring is judge-free: every document is
+    synthesized from a known ground truth, and abstaining ("UNKNOWN") is the required answer where no document
+    establishes a value.</p>
+    <div class="hero-meta">
+      <span><strong>12</strong> cases (4 economic × 3 age profiles)</span>
+      <span><strong>144</strong> model responses</span>
+      <span><strong>N=2</strong> per cell</span>
+      <span>scoring <strong>deterministic, judge-free</strong></span>
+      <span>documents <strong>synthetic (fidelity-to-records)</strong></span>
+    </div>
+  </div>
+
+  <div class="board"><table><thead><tr>
+    <th></th><th>Model</th><th>Field accuracy</th><th>Dependency</th><th>Conflicts resolved</th>
+    <th>Unknown respected</th><th>Unsupported guesses</th><th>Parsed n</th><th>$ / FAFSA</th><th>+ human backstop</th><th>Access</th>
+  </tr></thead><tbody><tr>
+  <td class="rank">1</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#16191E;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span>
+      <div><div class="model-name">Kimi K2.6</div><div class="model-lab">Moonshot AI</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:95.8%;"></div></div>
+      <span class="aqi-num">95.8</span></div></td>
+  <td class="sub">100.0</td>
+  <td class="sub">83.3</td>
+  <td class="sub">100.0</td>
+  <td class="sub">0.0</td>
+  <td class="sub">2/24 <span class="thin">⚠ low n</span></td>
+  <td class="sub">$0.02</td>
+  <td class="sub"><b>$0.77</b></td>
+  <td><span class="badge open">open · fireworks</span></td></tr><tr>
+  <td class="rank">2</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#16191E;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span>
+      <div><div class="model-name">Kimi K3</div><div class="model-lab">Moonshot AI</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:94.7%;"></div></div>
+      <span class="aqi-num">94.7</span></div></td>
+  <td class="sub">100.0</td>
+  <td class="sub">81.4</td>
+  <td class="sub">96.4</td>
+  <td class="sub">0.0</td>
+  <td class="sub">22/24</td>
+  <td class="sub">$0.02</td>
+  <td class="sub"><b>$0.98</b></td>
+  <td><span class="badge open">open · fireworks</span></td></tr><tr>
+  <td class="rank">3</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div><div class="model-name">Claude Opus 4.7</div><div class="model-lab">Anthropic</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:93.1%;"></div></div>
+      <span class="aqi-num">93.1</span></div></td>
+  <td class="sub">100.0</td>
+  <td class="sub">78.1</td>
+  <td class="sub">100.0</td>
+  <td class="sub">0.0</td>
+  <td class="sub">24/24</td>
+  <td class="sub">$0.10</td>
+  <td class="sub"><b>$1.35</b></td>
+  <td><span class="badge">direct API</span></td></tr><tr>
+  <td class="rank">4</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div><div class="model-name">Claude Sonnet 4.6</div><div class="model-lab">Anthropic</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:92.7%;"></div></div>
+      <span class="aqi-num">92.7</span></div></td>
+  <td class="sub">100.0</td>
+  <td class="sub">75.0</td>
+  <td class="sub">100.0</td>
+  <td class="sub">0.0</td>
+  <td class="sub">24/24</td>
+  <td class="sub">$0.03</td>
+  <td class="sub"><b>$1.34</b></td>
+  <td><span class="badge">direct API</span></td></tr><tr>
+  <td class="rank">5</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#615CED;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><rect x="4.4" y="4.4" width="7.2" height="7.2" fill="none" stroke="#fff" stroke-width="1.8" transform="rotate(45 8 8)"/><circle cx="8" cy="8" r="1.4" fill="#fff"/></svg></span>
+      <div><div class="model-name">Qwen 3.7 Plus</div><div class="model-lab">Alibaba</div></div></div></td>
+  <td><div class="aqi-cell"><div class="aqi-bar"><div class="aqi-fill" style="width:91.7%;"></div></div>
+      <span class="aqi-num">91.7</span></div></td>
+  <td class="sub">100.0</td>
+  <td class="sub">84.8</td>
+  <td class="sub">93.8</td>
+  <td class="sub">0.0</td>
+  <td class="sub">12/24 <span class="thin">⚠ low n</span></td>
+  <td class="sub">$0.02</td>
+  <td class="sub"><b>$1.52</b></td>
+  <td><span class="badge open">open · fireworks</span></td></tr><tr>
+  <td class="rank">—</td>
+  <td><div class="model-cell"><span class="mlogo" style="width:26px;height:26px;background:#4D6BFE;"><svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M2.2 10.5C3 5.5 7.5 3.4 11.3 4.6l2.5-1.6-.7 2.7c1.1 1.3.9 3.2-.4 4.5-1.9 2-5.2 2.7-7.4 1.7l-2.9 1.6 1-2.6c-.7-.1-1.1-.2-1.2-.4z" fill="#fff"/></svg></span>
+      <div><div class="model-name">DeepSeek V4 Pro</div><div class="model-lab">DeepSeek</div></div></div></td>
+  <td colspan="7" class="novision">no image support on this deployment — cannot sit this exam</td>
+  <td><span class="badge open">open · fireworks</span></td></tr></tbody></table></div>
+  <p class="board-note"><b>Field accuracy</b> = correct FAFSA fields across all cases. <b>Dependency</b> = correct
+  dependent/independent determination. <b>Conflicts resolved</b> = used the current document when stale history
+  contradicted it. <b>Unsupported guesses</b> = invented values for undocumented fields — the form-filling twin of
+  confabulation. ⚠ low n = many empty responses (reasoning-token issue, since fixed) — treat as provisional until healed. <b>$ / FAFSA</b> = estimated inference for one complete FAFSA (single multimodal call, list prices). <b>+ human backstop</b> = total cost per correctly completed FAFSA when a counselor fixes what the model got wrong: inference + wrong fields per case × 3 min at $30/hr ($1.50/field). The backstop column is the deployment-relevant number — a cheap model that needs more human correction can cost more end-to-end.</p>
+
+  <div class="grid2">
+    <div class="panel"><h3>Conflict resolution — the discriminating skill</h3>
+      <div class="sub-t">% of stale-history traps resisted · the hardest task on this exam for every model</div>
+      <div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#615CED;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><rect x="4.4" y="4.4" width="7.2" height="7.2" fill="none" stroke="#fff" stroke-width="1.8" transform="rotate(45 8 8)"/><circle cx="8" cy="8" r="1.4" fill="#fff"/></svg></span><span>Qwen 3.7 Plus</span></div><div class="hbar-track"><div class="hbar-fill" style="width:84%;background:var(--moss);">84.8</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#16191E;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span><span>Kimi K2.6</span></div><div class="hbar-track"><div class="hbar-fill" style="width:83%;background:var(--moss);">83.3</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#16191E;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span><span>Kimi K3</span></div><div class="hbar-track"><div class="hbar-fill" style="width:81%;background:var(--ochre);">81.4</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Claude Opus 4.7</span></div><div class="hbar-track"><div class="hbar-fill" style="width:78%;background:var(--ochre);">78.1</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Claude Sonnet 4.6</span></div><div class="hbar-track"><div class="hbar-fill" style="width:75%;background:var(--ochre);">75.0</div></div></div></div>
+    <div class="panel"><h3>Where models still miss</h3>
+      <div class="sub-t">Wrong-answer counts by FAFSA field, all models pooled</div>
+      <div class="hbar-row"><div class="hbar-label"><span>family size</span></div><div class="hbar-track"><div class="hbar-fill" style="width:95%;background:var(--accent);">46</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>student marital status</span></div><div class="hbar-track"><div class="hbar-fill" style="width:16%;background:var(--ochre);">8</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>wages</span></div><div class="hbar-track"><div class="hbar-fill" style="width:10%;background:var(--ochre);">5</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>untaxed income</span></div><div class="hbar-track"><div class="hbar-fill" style="width:8%;background:var(--ochre);">2</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>cash savings</span></div><div class="hbar-track"><div class="hbar-fill" style="width:8%;background:var(--ochre);">2</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>investments</span></div><div class="hbar-track"><div class="hbar-fill" style="width:8%;background:var(--ochre);">2</div></div></div></div>
+  </div>
+
+  <div class="panel" style="margin-bottom:26px;"><h3>Conflict areas: what goes unresolved</h3>
+    <div class="sub-t">When stale history contradicts current documents, which FAFSA areas do models fail to resolve? % resolved, all vision-capable models pooled</div>
+    <div class="hbar-row"><div class="hbar-label"><span>Family size — household changed since last filing</span></div><div class="hbar-track"><div class="hbar-fill" style="width:42%;background:var(--accent);">45.2%</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>Income (AGI) — stale prior-year figure</span></div><div class="hbar-track"><div class="hbar-fill" style="width:93%;background:var(--moss);">98.8%</div></div></div>
+<div class="hbar-row"><div class="hbar-label"><span>Dependency status — history says dependent</span></div><div class="hbar-track"><div class="hbar-fill" style="width:95%;background:var(--moss);">100.0%</div></div></div>
+    <div style="font-size:11px;color:var(--ink-soft);line-height:1.5;margin-top:12px;">These are the support areas: wherever resolution falls short of 100%, a human needs to verify that field before submission — budgeted in the backstop column above. The weakest area this run is <b>Family size</b>.</div></div>
+
+  <div class="foot">Headline findings this pilot: every vision-capable model determined dependency status correctly
+  in all measured cases, and no model invented a value for an undocumented field — abstention discipline was
+  universal. The separating skill is resisting stale data. DeepSeek V4 Pro's Fireworks deployment does not accept
+  image input and cannot sit this exam — itself an Index-relevant capability fact.<br>
+  Documents are synthetic and generated from the scoring ground truth; results measure document fidelity, not
+  familiarity with real IRS layouts. Calibration batch — below publication sample bar.</div>
+</div>
+</body></html>

@@ -9,6 +9,7 @@
 body { font-family:'Inter',-apple-system,system-ui,sans-serif; background:var(--bg); color:var(--ink); font-size:14px; }
 .watermark { background:var(--accent); color:#fff; text-align:center; font-size:12px; padding:8px 16px; font-family:ui-monospace,monospace; }
 .topbar { background:var(--paper); border-bottom:1px solid var(--line); padding:0 32px; height:52px; display:flex; align-items:center; gap:12px; }
+.toplink { margin-left:auto; font-size:12.5px; color:var(--accent); text-decoration:none; font-weight:600; }
 .brand { font-weight:700; font-size:15px; } .brand em { font-style:normal; color:var(--accent); }
 .wrap { max-width:1280px; margin:0 auto; padding:0 32px 48px; }
 .hero { padding:34px 0 18px; } .hero h1 { font-size:27px; letter-spacing:-0.02em; margin-bottom:8px; }
@@ -56,7 +57,8 @@ tbody tr:hover { background:var(--bg); }
 .hidden { display:none; }
 </style></head><body>
 <div class="watermark">PILOT BATCH · batch_pilot_001 · measured data, NOT gate-passed (κ pending, n&lt;200/model/track) · not for publication</div>
-<div class="topbar"><div class="brand">ScenarioLab <em>Index</em></div></div>
+<div class="topbar"><div class="brand">ScenarioLab <em>Index</em></div>
+<a class="toplink" href="fafsa-pilot.html">FAFSA Document Intelligence →</a></div>
 <div class="wrap">
 <div id="view-hs" class="">
   <div class="hero"><h1>The <em>High School Advising</em> Model Index <span class="pill">pilot batch</span></h1>
@@ -284,6 +286,16 @@ tbody tr:hover { background:var(--bg); }
 <div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Claude Sonnet 4.6</span></div><div class="hbar-track"><div class="hbar-fill" style="width:43%;background:var(--ochre);">2.71</div></div></div>
 <div class="hbar-row"><div class="hbar-label"><span class="mlogo" style="width:16px;height:16px;background:#C15F3C;"><svg viewBox="0 0 16 16" width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Claude Opus 4.7</span></div><div class="hbar-track"><div class="hbar-fill" style="width:13%;background:var(--ochre);">0.84</div></div></div></div></div>
   
+</div>
+<div class="panel fw-panel">
+  <h3>Companion measurement: FAFSA document intelligence</h3>
+  <div class="sub-t">Beyond conversational advising — can models complete a FAFSA from a tax-return PDF, phone photos of documents, and stale historical records?</div>
+  <div style="font-size:12px;color:var(--ink-soft);line-height:1.6;">
+    Same harness philosophy (judge-free deterministic scoring, abstention as a first-class answer,
+    stale-data traps), applied to multimodal form completion across 12 student cases spanning four economic
+    situations and three age/dependency profiles — with per-model cost-per-completed-FAFSA estimates
+    including the human backstop. <a href="fafsa-pilot.html" style="color:var(--accent);font-weight:600;">View the FAFSA pilot results →</a>
+  </div>
 </div>
 <div class="gates"><h3>Publication gate status</h3><ul><li><b>kappa</b> — no judge–human κ: run human double-scoring and pass --kappa-file</li><li><b>consent</b> — consent audit is 'pending', must be 'passed'</li></ul></div>
 <div class="foot">Harness index-eval v0.1 · HS track anchored to the CARA National Quality Advising Framework; college track spans persistence, transfer, benefits &amp; completion ·
