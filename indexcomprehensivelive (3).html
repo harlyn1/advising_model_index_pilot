@@ -1,0 +1,667 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScenarioLab Index — comprehensive run, final scores</title>
+<style>
+:root { --bg:#fafaf8; --paper:#fff; --ink:#16150f; --ink-soft:#4a4940; --ink-mute:#8b897c;
+--line:#e4e2d8; --line-soft:#efeee6; --accent:#c2410c; --accent-soft:#fff1e8;
+--moss:#4d7c0f; --moss-soft:#f1f7e8; --ochre:#b45309; --blue:#0369a1; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',-apple-system,system-ui,sans-serif; background:var(--bg); color:var(--ink); font-size:14px; }
+.watermark { background:var(--blue); color:#fff; text-align:center; font-size:12px; padding:8px 16px; font-family:ui-monospace,monospace; }
+.wrap { max-width:1200px; margin:0 auto; padding:28px 24px 60px; }
+h1 { font-size:24px; letter-spacing:-0.01em; }
+.hero p { font-size:14px; color:var(--ink-soft); max-width:860px; line-height:1.55; margin-top:6px; }
+.pill { font-size:10px; font-family:ui-monospace,monospace; background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent); border-radius:999px; padding:3px 10px; vertical-align:middle; margin-left:8px; }
+.statstrip { display:flex; gap:12px; margin:18px 0 22px; flex-wrap:wrap; }
+.statstrip div { background:var(--paper); border:1px solid var(--line); padding:10px 16px; }
+.statstrip .n { font-family:ui-monospace,monospace; font-size:17px; font-weight:600; display:block; }
+.statstrip .l { font-size:10px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-mute); }
+table { width:100%; border-collapse:collapse; background:var(--paper); border:1px solid var(--line); }
+thead th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-mute); padding:10px 9px; border-bottom:1px solid var(--line); background:var(--bg); white-space:nowrap; }
+thead th.pend2 { color:#b9b7aa; }
+td { padding:10px 9px; border-bottom:1px solid var(--line-soft); vertical-align:middle; }
+tbody tr:hover { background:var(--bg); }
+.rank { font-family:ui-monospace,monospace; font-size:12px; color:var(--ink-mute); width:28px; }
+.model-name { font-weight:600; font-size:13px; white-space:nowrap; }
+.model-lab { font-size:10.5px; color:var(--ink-mute); }
+.mark { width:22px; height:22px; border-radius:5px; display:inline-flex; align-items:center; justify-content:center; margin-right:8px; vertical-align:middle; }
+.sub { font-family:ui-monospace,monospace; font-size:11.5px; }
+.big { font-family:ui-monospace,monospace; font-size:12.5px; font-weight:600; }
+.ci { font-size:9.5px; color:var(--ink-mute); font-family:ui-monospace,monospace; }
+.subline { display:block; font-size:9px; color:var(--ink-mute); font-family:ui-monospace,monospace; margin-top:1px; }
+.subline.good { color:var(--moss); }
+.subline.warn { color:var(--ochre); }
+.dim { color:#b9b7aa; font-style:italic; font-size:11px; }
+.tie { font-size:9px; font-family:ui-monospace,monospace; color:var(--ink-mute); }
+.chip { font-size:9.5px; font-family:ui-monospace,monospace; border:1px solid var(--blue); color:var(--blue); border-radius:3px; padding:1px 5px; cursor:pointer; margin-right:3px; white-space:nowrap; }
+.chip:hover { background:var(--blue); color:#fff; }
+.board-note { font-size:11px; color:var(--ink-mute); margin:10px 0 26px 4px; line-height:1.5; max-width:1100px; }
+.board-note b { color:var(--ink-soft); }
+.findings { margin-top:34px; }
+.findings h2 { font-size:18px; letter-spacing:-0.01em; margin-bottom:12px; }
+.fgrid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.fcard { background:var(--paper); border:1px solid var(--line); border-left:3px solid var(--moss); padding:12px 15px; font-size:12px; color:var(--ink-soft); line-height:1.55; }
+.fcard b { color:var(--ink); display:block; margin-bottom:3px; font-size:12.5px; }
+.fcard.warn { border-left-color:var(--ochre); }
+@media (max-width:900px){ .fgrid{grid-template-columns:1fr;} }
+.igrid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.icard { background:var(--paper); border:1px solid var(--line); border-top:3px solid var(--blue); padding:12px 14px; font-size:11.5px; color:var(--ink-soft); line-height:1.55; }
+.icard h4 { font-size:13px; color:var(--ink); margin-bottom:6px; }
+.icard .inum { font-family:ui-monospace,monospace; font-size:10px; color:var(--ink-mute); display:block; margin-bottom:2px; }
+.icard .kv { font-family:ui-monospace,monospace; font-size:10.5px; color:var(--ink); display:block; margin:4px 0; }
+.samediff { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; }
+.samediff div { background:var(--paper); border:1px solid var(--line); padding:11px 14px; font-size:12px; color:var(--ink-soft); line-height:1.6; }
+.samediff .same { border-left:3px solid var(--moss); }
+.samediff .diff { border-left:3px solid var(--ochre); }
+.samediff b { color:var(--ink); }
+@media (max-width:1100px){ .igrid{grid-template-columns:repeat(2,1fr);} .samediff{grid-template-columns:1fr;} }
+.overlay { display:none; position:fixed; inset:0; background:rgba(22,21,15,0.45); z-index:10; }
+.modal { display:none; position:fixed; top:6vh; left:50%; transform:translateX(-50%); width:min(860px,94vw); max-height:86vh; overflow-y:auto; background:var(--paper); border:1px solid var(--line); box-shadow:0 12px 40px rgba(0,0,0,0.18); z-index:11; padding:22px 26px; }
+.modal h3 { font-size:16px; margin-bottom:2px; }
+.modal .sub-t { font-size:11.5px; color:var(--ink-mute); margin-bottom:14px; }
+.mclose { float:right; font-size:20px; color:var(--ink-mute); cursor:pointer; border:none; background:none; }
+.ltable { width:100%; border-collapse:collapse; margin-top:6px; border:none; }
+.ltable th { font-size:10px; text-transform:uppercase; color:var(--ink-mute); text-align:left; padding:7px 8px; border-bottom:1px solid var(--line); background:none; }
+.ltable td { font-size:12px; color:var(--ink-soft); padding:8px; border-bottom:1px solid var(--line-soft); vertical-align:top; line-height:1.45; }
+.ltable td.m { font-family:ui-monospace,monospace; white-space:nowrap; }
+.tagm { font-size:9px; font-family:ui-monospace,monospace; background:var(--moss-soft); color:var(--moss); padding:1px 6px; border-radius:3px; }
+.tage { font-size:9px; font-family:ui-monospace,monospace; background:var(--accent-soft); color:var(--ochre); padding:1px 6px; border-radius:3px; }
+
+.tabbar { display:flex; align-items:center; gap:8px; margin:0 0 12px; }
+.tabbtn { font-family:ui-monospace,monospace; font-size:12px; padding:7px 16px; background:var(--paper); border:1px solid var(--line); cursor:pointer; color:var(--ink-soft); }
+.tabbtn.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+.tabnote { font-size:10.5px; color:var(--ink-mute); margin-left:8px; }
+.tabpane[hidden] { display:none; }
+.sub.click { text-decoration:underline dotted var(--blue); text-underline-offset:3px; cursor:pointer; color:var(--blue); }
+.sub.click:hover { background:var(--accent-soft); }
+.proj { font-family:ui-monospace,monospace; font-size:11.5px; cursor:pointer; text-decoration:underline dotted var(--moss); text-underline-offset:3px; color:var(--moss); font-weight:600; }
+.aqi-num { font-family:ui-monospace,monospace; font-size:12.5px; font-weight:600; }
+.gate { font-size:10px; font-family:ui-monospace,monospace; padding:2px 8px; border-radius:3px; white-space:nowrap; background:var(--moss-soft); color:var(--moss); }
+.setuprow { display:flex; gap:8px; flex-wrap:wrap; margin:14px 0 4px; }
+.setupchip { font-size:11px; font-family:ui-monospace,monospace; border:1px solid var(--blue); color:var(--blue); background:var(--paper); border-radius:999px; padding:5px 14px; cursor:pointer; }
+.setupchip:hover { background:var(--blue); color:#fff; }
+.convgrid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.convcol { border:1px solid var(--line); background:var(--bg); }
+.convhead { padding:9px 12px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
+.convhead b { font-size:12.5px; }
+.axes { font-family:ui-monospace,monospace; font-size:10px; color:var(--ink-mute); }
+.msg { margin:10px 12px; font-size:12px; line-height:1.55; }
+.msg .who { font-size:9.5px; font-family:ui-monospace,monospace; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-mute); margin-bottom:2px; }
+.msg.student .bubble { background:var(--line-soft); padding:8px 11px; border-radius:6px; color:var(--ink-soft); }
+.msg.advisor .bubble { background:var(--paper); border:1px solid var(--line); padding:8px 11px; border-radius:6px; color:var(--ink-soft); }
+.verdict { margin-top:12px; font-size:12px; color:var(--ink-soft); background:var(--accent-soft); border-left:3px solid var(--accent); padding:9px 12px; line-height:1.5; }
+.hsec { margin-top:44px; }
+.hsec h2 { font-size:18px; letter-spacing:-0.01em; }
+.hsec .sub-t2 { font-size:12.5px; color:var(--ink-mute); margin:4px 0 16px; max-width:820px; line-height:1.5; }
+.hgrid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+.hcard { background:var(--paper); border:1px solid var(--line); border-top:3px solid var(--blue); padding:12px 14px; }
+.hcard .hnum { font-family:ui-monospace,monospace; font-size:10px; color:var(--ink-mute); }
+.hcard h4 { font-size:13px; margin:2px 0 6px; }
+.hcard p { font-size:11.5px; color:var(--ink-soft); line-height:1.5; }
+.hcard details { margin-top:8px; }
+.hcard summary { font-size:10.5px; color:var(--blue); cursor:pointer; font-family:ui-monospace,monospace; }
+.hcard details p { font-size:11px; color:var(--ink-mute); margin-top:6px; }
+.hstatus { display:inline-block; font-size:9px; font-family:ui-monospace,monospace; border-radius:3px; padding:2px 7px; margin-top:9px; }
+.hstatus.ship { background:var(--moss-soft); color:var(--moss); }
+.hstatus.cond { background:var(--accent-soft); color:var(--ochre); }
+.hplain { margin-top:9px; background:var(--moss-soft); border-left:2px solid var(--moss); padding:7px 9px; font-size:11px; color:var(--ink-soft); line-height:1.5; }
+.hplain b { color:var(--moss); font-size:9px; font-family:ui-monospace,monospace; letter-spacing:0.04em; display:block; margin-bottom:2px; }
+.hcost { font-size:10px; font-family:ui-monospace,monospace; color:var(--ink-mute); border-top:1px dashed var(--line); margin-top:9px; padding-top:7px; line-height:1.5; }
+.hcost b { color:var(--ink-soft); font-weight:600; }
+.hcost .save { color:var(--moss); font-weight:600; }
+.hcost .spend { color:var(--ochre); font-weight:600; }
+.hnet { margin-top:14px; background:var(--paper); border:1px solid var(--line); padding:12px 16px; font-size:12px; color:var(--ink-soft); line-height:1.6; }
+.hnet b { color:var(--ink); }
+.hrules { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; }
+.hrules div { background:var(--paper); border:1px solid var(--line); border-left:3px solid var(--accent); padding:11px 14px; font-size:12px; color:var(--ink-soft); line-height:1.55; }
+.hrules b { color:var(--ink); }
+.hlaunch { margin-top:14px; background:var(--moss-soft); border:1px solid var(--moss); padding:13px 16px; font-size:12.5px; color:var(--ink-soft); line-height:1.6; }
+.hlaunch b { color:var(--moss); }
+@media (max-width:1100px){ .hgrid{grid-template-columns:repeat(2,1fr);} .hrules{grid-template-columns:1fr;} }
+</style></head><body>
+
+<div class="watermark">COMPLETE RUN · all 8,768 conversations scored (judge σ=1.102, prereg sha frozen) · NOT YET PUBLISHABLE — two gates open: human–judge κ double-scoring · consent audit · ranks 1–5 are one statistical tie band</div>
+
+<div class="wrap">
+  <h1>ScenarioLab Index <span class="pill">comprehensive run · full_001 · final scores</span></h1>
+  <div class="hero"><p>Final results from the eight-model comprehensive run: 8,768 conversations, both tracks, every judged metric in. Rows are ordered by AQI — the pre-registered composite of factuality, equity, actionability, and conversation quality medians — but the honest headline is that the top five sit inside one ±7 tie band (V4): Opus, Sonnet, Kimi K3, Kimi K2.6, and GPT-5.5 are statistically indistinguishable on the composite. The sub-metrics are where the models actually differ, and they differ sharply.</p></div>
+  <div class="setuprow">
+    <button class="setupchip" onclick="openModal('m-personas')">32 personas — who was tested ⓘ</button>
+    <button class="setupchip" onclick="openModal('m-scenarios')">27 scenarios — what was asked ⓘ</button>
+    <button class="setupchip" onclick="openModal('m-judge')">judge &amp; simulator ⓘ</button>
+    <button class="setupchip" onclick="openModal('m-settings')">run settings &amp; validations ⓘ</button>
+    <button class="setupchip" onclick="document.querySelector('.igrid').scrollIntoView({behavior:'smooth'})">full instrument ↓</button>
+  </div>
+
+
+  <div class="statstrip">
+    <div><span class="n">8,768 / 8,768</span><span class="l">conversations · complete</span></div>
+    <div><span class="n">8,764</span><span class="l">scored · judge σ 1.102</span></div>
+    <div><span class="n">+15.9 to +73.4</span><span class="l">grounding margin, every model, both tracks</span></div>
+    <div><span class="n">6 / 16</span><span class="l">track-gates flagged review (&lt;99% safety)</span></div>
+    <div><span class="n">Sep 2 · 18:33 UTC</span><span class="l">scored</span></div>
+  </div>
+
+    <div class="tabbar">
+    <button class="tabbtn active" id="btn-hs" onclick="showTab('hs')">High school track</button>
+    <button class="tabbtn" id="btn-college" onclick="showTab('college')">College track</button>
+    <span class="tabnote">separate grids, personas &amp; scenarios — the AQI ordering differs by track</span>
+  </div>
+  <div id="tab-hs" class="tabpane">
+  <table>
+    <thead><tr>
+      <th></th><th>Model</th>
+      <th>AQI</th>
+      <th>Factuality ± 95% CI<br><span style="font-weight:400;text-transform:none;letter-spacing:0">mean, grounded · click for real response</span></th>
+      <th>Action.<br><span style="font-weight:400;text-transform:none;letter-spacing:0">median · click</span></th>
+      <th>Conv.<br><span style="font-weight:400;text-transform:none;letter-spacing:0">median · click</span></th>
+      <th>Equity<br><span style="font-weight:400;text-transform:none;letter-spacing:0">parity · worst gap</span></th>
+      <th>Cost · Latency /conv</th>
+      <th>Safety gate<br><span style="font-weight:400;text-transform:none;letter-spacing:0">pass ≥99%</span></th>
+      <th style="color:var(--moss)">w/ interventions ⓘ<br><span style="font-weight:400;text-transform:none;letter-spacing:0">projected AQI · EST</span></th>
+      <th>Lessons ⓘ</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td class="rank">1</td>
+        <td><span class="mark" style="background:#C15F3C"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="model-name">Claude Opus 4.7</span> <span class="model-lab">Anthropic</span></td>
+        <td><span class="aqi-num">86</span><span class="subline">ranks 1–5 tied — Δ≤7 band (V4)</span></td>
+        <td class="sub click" onclick="openComp('hs','claude-opus-4-7','fact')">80.6 <span class="ci">[78.3–82.8]</span><span class="subline good">+61.1 vs ctrl (ctrl 19.5)</span></td>
+        <td class="sub click" onclick="openComp('hs','claude-opus-4-7','act')">62.5</td>
+        <td class="sub click" onclick="openComp('hs','claude-opus-4-7','conv')">93.8</td>
+        <td class="sub">97.9<span class="subline warn">rural-broadband −1.9</span></td>
+        <td class="sub">$0.096 · 45s</td>
+        <td><span class="gate">PASS 99.6%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">88 <small>(+2 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">A5</span><span class="chip" onclick="openModal('m-les')">re-judge</span></td>
+      </tr>
+      <tr>
+        <td class="rank">2</td>
+        <td><span class="mark" style="background:#16191E"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span><span class="model-name">Kimi K3</span> <span class="model-lab">Moonshot AI</span></td>
+        <td><span class="aqi-num">85</span><span class="subline">tied band 1–5</span></td>
+        <td class="sub click" onclick="openComp('hs','kimi-k3','fact')">85.5 <span class="ci">[83.7–87.1]</span><span class="subline good">+61.0 vs ctrl (ctrl 24.5)</span></td>
+        <td class="sub click" onclick="openComp('hs','kimi-k3','act')">62.5</td>
+        <td class="sub click" onclick="openComp('hs','kimi-k3','conv')">87.5</td>
+        <td class="sub">97.3<span class="subline warn">caregiver −2.5</span></td>
+        <td class="sub">$0.024 · 147s</td>
+        <td><span class="gate">PASS 99.8%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">86 <small>(+1 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">A2</span><span class="chip" onclick="openModal('m-les')">A6</span></td>
+      </tr>
+      <tr>
+        <td class="rank">3</td>
+        <td><span class="mark" style="background:#16191E"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span><span class="model-name">Kimi K2.6</span> <span class="model-lab">Moonshot AI</span></td>
+        <td><span class="aqi-num">85</span><span class="subline">tied band 1–5</span></td>
+        <td class="sub click" onclick="openComp('hs','kimi-k2.6','fact')">91.1 <span class="ci">[90.0–92.2]</span><span class="subline good">+70.0 vs ctrl (ctrl 21.1)</span></td>
+        <td class="sub click" onclick="openComp('hs','kimi-k2.6','act')">62.5</td>
+        <td class="sub click" onclick="openComp('hs','kimi-k2.6','conv')">81.2</td>
+        <td class="sub">97.6<span class="subline warn">caregiver −2.3</span></td>
+        <td class="sub">$0.019 · 152s</td>
+        <td><span class="gate">PASS 100%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">86 <small>(+1 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">A2</span></td>
+      </tr>
+      <tr>
+        <td class="rank">4</td>
+        <td><span class="mark" style="background:#C15F3C"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="model-name">Claude Sonnet 4.6</span> <span class="model-lab">Anthropic</span></td>
+        <td><span class="aqi-num">84</span><span class="subline">tied band 1–5</span></td>
+        <td class="sub click" onclick="openComp('hs','claude-sonnet-4-6','fact')">83.0 <span class="ci">[79.8–86.1]</span><span class="subline good">+43.9 vs ctrl (ctrl 39.2)</span></td>
+        <td class="sub click" onclick="openComp('hs','claude-sonnet-4-6','act')">43.8<span class="subline warn">elicitation-first — see two-lens</span></td>
+        <td class="sub click" onclick="openComp('hs','claude-sonnet-4-6','conv')">93.8</td>
+        <td class="sub">97.7<span class="subline warn">caregiver −1.5</span></td>
+        <td class="sub">$0.031 · 29s</td>
+        <td><span class="gate">PASS 99.6%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">88 <small>(+4 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">A5</span><span class="chip" onclick="openModal('m-les')">re-judge</span></td>
+      </tr>
+      <tr>
+        <td class="rank">5</td>
+        <td><span class="mark" style="background:#10A37F"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M8 1.9l5.3 3v6.2l-5.3 3-5.3-3V4.9z" fill="none" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><span class="model-name">GPT-5.5</span> <span class="model-lab">OpenAI</span></td>
+        <td><span class="aqi-num">82</span><span class="subline">tied band 1–5</span></td>
+        <td class="sub click" onclick="openComp('hs','gpt-5.5','fact')">95.0 <span class="ci">[93.9–95.9]</span><span class="subline good">+31.7 vs ctrl (ctrl 63.3)</span></td>
+        <td class="sub click" onclick="openComp('hs','gpt-5.5','act')">62.5</td>
+        <td class="sub click" onclick="openComp('hs','gpt-5.5','conv')">68.8</td>
+        <td class="sub">96.1<span class="subline warn">rural-broadband −3.6</span></td>
+        <td class="sub">$0.088 · 60s</td>
+        <td><span class="gate">PASS 100%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">85 <small>(+3 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">PS probe</span></td>
+      </tr>
+      <tr>
+        <td class="rank">6</td>
+        <td><span class="mark" style="background:#fff;border:1px solid var(--line)"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M12.1 4.3A5.3 5.3 0 0 0 8 2.7" fill="none" stroke="#EA4335" stroke-width="2.2"/><path d="M8 2.7A5.3 5.3 0 0 0 2.7 8" fill="none" stroke="#FBBC05" stroke-width="2.2"/><path d="M2.7 8A5.3 5.3 0 0 0 8 13.3" fill="none" stroke="#34A853" stroke-width="2.2"/><path d="M8 13.3A5.3 5.3 0 0 0 13.2 9" fill="none" stroke="#4285F4" stroke-width="2.2"/></svg></span><span class="model-name">Gemini 3.1 Pro</span> <span class="model-lab">Google</span></td>
+        <td><span class="aqi-num">80</span><span class="subline">band 6–8 overlaps band above</span></td>
+        <td class="sub click" onclick="openComp('hs','gemini-3.1-pro','fact')">92.0 <span class="ci">[90.9–93.2]</span><span class="subline good">+68.3 vs ctrl (ctrl 23.8)</span></td>
+        <td class="sub click" onclick="openComp('hs','gemini-3.1-pro','act')">43.8</td>
+        <td class="sub click" onclick="openComp('hs','gemini-3.1-pro','conv')">81.2</td>
+        <td class="sub">96.6<span class="subline warn">rural-broadband −3.6</span></td>
+        <td class="sub">$0.074 · 52s</td>
+        <td><span class="gate" style="background:var(--accent-soft);color:var(--ochre)">REVIEW 97.7%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">83 <small>(+3 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">PS probe · priority</span></td>
+      </tr>
+      <tr>
+        <td class="rank">7</td>
+        <td><span class="mark" style="background:#10A37F"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M8 1.9l5.3 3v6.2l-5.3 3-5.3-3V4.9z" fill="none" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><span class="model-name">GPT-5.6 Sol</span> <span class="model-lab">OpenAI</span></td>
+        <td><span class="aqi-num">79</span><span class="subline">band 6–8</span></td>
+        <td class="sub click" onclick="openComp('hs','gpt-5.6-sol','fact')">90.4 <span class="ci">[88.7–91.9]</span><span class="subline good">+59.9 vs ctrl (ctrl 30.5)</span></td>
+        <td class="sub click" onclick="openComp('hs','gpt-5.6-sol','act')">56.2</td>
+        <td class="sub click" onclick="openComp('hs','gpt-5.6-sol','conv')">62.5</td>
+        <td class="sub">97.1<span class="subline warn">rural-broadband −3.0</span></td>
+        <td class="sub">$0.048 · 32s</td>
+        <td><span class="gate">PASS 100%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">82 <small>(+3 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">PS probe</span></td>
+      </tr>
+      <tr>
+        <td class="rank">8</td>
+        <td><span class="mark" style="background:#6E3BEF"><svg width="15" height="15" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5" fill="none" stroke="#fff" stroke-width="1.8"/><path d="M10.5 10.5 13 13" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></span><span class="model-name">Qwen 3.7 Plus</span> <span class="model-lab">Alibaba</span></td>
+        <td><span class="aqi-num">77</span><span class="subline">band 6–8</span></td>
+        <td class="sub click" onclick="openComp('hs','qwen3.7-plus','fact')">94.3 <span class="ci">[93.5–95.2]</span><span class="subline good">+73.4 vs ctrl (ctrl 21.0)</span></td>
+        <td class="sub click" onclick="openComp('hs','qwen3.7-plus','act')">43.8</td>
+        <td class="sub click" onclick="openComp('hs','qwen3.7-plus','conv')">68.8</td>
+        <td class="sub">96.3<span class="subline warn">rural-broadband −3.2</span></td>
+        <td class="sub">$0.016 · 21s</td>
+        <td><span class="gate" style="background:var(--accent-soft);color:var(--ochre)">REVIEW 97.7%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">80 <small>(+3 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">A4</span><span class="chip" onclick="openModal('m-les')">A6</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div id="tab-college" class="tabpane" hidden>
+  <table>
+    <thead><tr>
+      <th></th><th>Model</th>
+      <th>AQI</th>
+      <th>Factuality ± 95% CI<br><span style="font-weight:400;text-transform:none;letter-spacing:0">mean, grounded · click for real response</span></th>
+      <th>Action.<br><span style="font-weight:400;text-transform:none;letter-spacing:0">median · click</span></th>
+      <th>Conv.<br><span style="font-weight:400;text-transform:none;letter-spacing:0">median · click</span></th>
+      <th>Equity<br><span style="font-weight:400;text-transform:none;letter-spacing:0">parity · worst gap</span></th>
+      <th>Cost · Latency /conv</th>
+      <th>Safety gate<br><span style="font-weight:400;text-transform:none;letter-spacing:0">pass ≥99%</span></th>
+      <th style="color:var(--moss)">w/ interventions ⓘ<br><span style="font-weight:400;text-transform:none;letter-spacing:0">projected AQI · EST</span></th>
+      <th>Lessons ⓘ</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td class="rank">1</td>
+        <td><span class="mark" style="background:#C15F3C"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="model-name">Claude Sonnet 4.6</span> <span class="model-lab">Anthropic</span></td>
+        <td><span class="aqi-num">84</span><span class="subline">ranks 1–5 tied — Δ≤7 band (V4)</span></td>
+        <td class="sub click" onclick="openComp('college','claude-sonnet-4-6','fact')">82.3 <span class="ci">[77.9–86.7]</span><span class="subline good">+15.9 vs ctrl (ctrl 66.4)</span></td>
+        <td class="sub click" onclick="openComp('college','claude-sonnet-4-6','act')">43.8<span class="subline warn">elicitation-first — see two-lens</span></td>
+        <td class="sub click" onclick="openComp('college','claude-sonnet-4-6','conv')">93.8</td>
+        <td class="sub">99.5<span class="subline warn">veteran −1.0</span></td>
+        <td class="sub">$0.031 · 29s</td>
+        <td><span class="gate">PASS 99.2%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">88 <small>(+4 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">A5</span><span class="chip" onclick="openModal('m-les')">re-judge</span></td>
+      </tr>
+      <tr>
+        <td class="rank">2</td>
+        <td><span class="mark" style="background:#C15F3C"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M3.4 12.8 8 3.2l4.6 9.6" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="model-name">Claude Opus 4.7</span> <span class="model-lab">Anthropic</span></td>
+        <td><span class="aqi-num">83</span><span class="subline">tied band 1–5</span></td>
+        <td class="sub click" onclick="openComp('college','claude-opus-4-7','fact')">73.1 <span class="ci">[69.8–76.4]</span><span class="subline good">+28.4 vs ctrl (ctrl 44.8)</span></td>
+        <td class="sub click" onclick="openComp('college','claude-opus-4-7','act')">62.5</td>
+        <td class="sub click" onclick="openComp('college','claude-opus-4-7','conv')">87.5</td>
+        <td class="sub">98.0<span class="subline warn">veteran −3.2</span></td>
+        <td class="sub">$0.096 · 45s</td>
+        <td><span class="gate" style="background:var(--accent-soft);color:var(--ochre)">REVIEW 98.6%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">85 <small>(+2 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">A5</span><span class="chip" onclick="openModal('m-les')">re-judge</span></td>
+      </tr>
+      <tr>
+        <td class="rank">3</td>
+        <td><span class="mark" style="background:#16191E"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span><span class="model-name">Kimi K3</span> <span class="model-lab">Moonshot AI</span></td>
+        <td><span class="aqi-num">82</span><span class="subline">tied band 1–5</span></td>
+        <td class="sub click" onclick="openComp('college','kimi-k3','fact')">80.4 <span class="ci">[77.8–82.9]</span><span class="subline good">+21.6 vs ctrl (ctrl 58.8)</span></td>
+        <td class="sub click" onclick="openComp('college','kimi-k3','act')">62.5</td>
+        <td class="sub click" onclick="openComp('college','kimi-k3','conv')">81.2</td>
+        <td class="sub">97.8<span class="subline warn">veteran −2.8</span></td>
+        <td class="sub">$0.024 · 147s</td>
+        <td><span class="gate" style="background:var(--accent-soft);color:var(--ochre)">REVIEW 98.1%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">83 <small>(+1 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">A2</span><span class="chip" onclick="openModal('m-les')">A6</span></td>
+      </tr>
+      <tr>
+        <td class="rank">4</td>
+        <td><span class="mark" style="background:#16191E"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M10.8 2.3a6 6 0 1 0 2.9 8.2A5 5 0 0 1 10.8 2.3z" fill="#fff"/></svg></span><span class="model-name">Kimi K2.6</span> <span class="model-lab">Moonshot AI</span></td>
+        <td><span class="aqi-num">81</span><span class="subline">tied band 1–5</span></td>
+        <td class="sub click" onclick="openComp('college','kimi-k2.6','fact')">87.5 <span class="ci">[84.9–89.9]</span><span class="subline good">+25.5 vs ctrl (ctrl 62.0)</span></td>
+        <td class="sub click" onclick="openComp('college','kimi-k2.6','act')">56.2</td>
+        <td class="sub click" onclick="openComp('college','kimi-k2.6','conv')">68.8</td>
+        <td class="sub">99.5<span class="subline warn">veteran −0.6</span></td>
+        <td class="sub">$0.019 · 152s</td>
+        <td><span class="gate">PASS 99.4%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">82 <small>(+1 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">A2</span></td>
+      </tr>
+      <tr>
+        <td class="rank">5</td>
+        <td><span class="mark" style="background:#10A37F"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M8 1.9l5.3 3v6.2l-5.3 3-5.3-3V4.9z" fill="none" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><span class="model-name">GPT-5.5</span> <span class="model-lab">OpenAI</span></td>
+        <td><span class="aqi-num">81</span><span class="subline">tied band 1–5</span></td>
+        <td class="sub click" onclick="openComp('college','gpt-5.5','fact')">92.2 <span class="ci">[90.5–93.9]</span><span class="subline good">+34.8 vs ctrl (ctrl 57.4)</span></td>
+        <td class="sub click" onclick="openComp('college','gpt-5.5','act')">62.5</td>
+        <td class="sub click" onclick="openComp('college','gpt-5.5','conv')">62.5</td>
+        <td class="sub">98.2<span class="subline warn">adult 25+ −1.9</span></td>
+        <td class="sub">$0.088 · 60s</td>
+        <td><span class="gate">PASS 100%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">84 <small>(+3 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">PS probe</span></td>
+      </tr>
+      <tr>
+        <td class="rank">6</td>
+        <td><span class="mark" style="background:#fff;border:1px solid var(--line)"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M12.1 4.3A5.3 5.3 0 0 0 8 2.7" fill="none" stroke="#EA4335" stroke-width="2.2"/><path d="M8 2.7A5.3 5.3 0 0 0 2.7 8" fill="none" stroke="#FBBC05" stroke-width="2.2"/><path d="M2.7 8A5.3 5.3 0 0 0 8 13.3" fill="none" stroke="#34A853" stroke-width="2.2"/><path d="M8 13.3A5.3 5.3 0 0 0 13.2 9" fill="none" stroke="#4285F4" stroke-width="2.2"/></svg></span><span class="model-name">Gemini 3.1 Pro</span> <span class="model-lab">Google</span></td>
+        <td><span class="aqi-num">76</span><span class="subline">band 6–8 overlaps band above</span></td>
+        <td class="sub click" onclick="openComp('college','gemini-3.1-pro','fact')">90.4 <span class="ci">[88.6–92.2]</span><span class="subline good">+48.0 vs ctrl (ctrl 42.4)</span></td>
+        <td class="sub click" onclick="openComp('college','gemini-3.1-pro','act')">37.5</td>
+        <td class="sub click" onclick="openComp('college','gemini-3.1-pro','conv')">68.8</td>
+        <td class="sub">99.0<span class="subline warn">transfer −1.3</span></td>
+        <td class="sub">$0.074 · 52s</td>
+        <td><span class="gate" style="background:var(--accent-soft);color:var(--ochre)">REVIEW 95.3%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">79 <small>(+3 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">PS probe · priority</span></td>
+      </tr>
+      <tr>
+        <td class="rank">7</td>
+        <td><span class="mark" style="background:#10A37F"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M8 1.9l5.3 3v6.2l-5.3 3-5.3-3V4.9z" fill="none" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><span class="model-name">GPT-5.6 Sol</span> <span class="model-lab">OpenAI</span></td>
+        <td><span class="aqi-num">76</span><span class="subline">band 6–8</span></td>
+        <td class="sub click" onclick="openComp('college','gpt-5.6-sol','fact')">91.7 <span class="ci">[89.8–93.7]</span><span class="subline good">+24.9 vs ctrl (ctrl 66.8)</span></td>
+        <td class="sub click" onclick="openComp('college','gpt-5.6-sol','act')">50.0</td>
+        <td class="sub click" onclick="openComp('college','gpt-5.6-sol','conv')">56.2</td>
+        <td class="sub">99.2<span class="subline warn">adult 25+ −0.6</span></td>
+        <td class="sub">$0.048 · 32s</td>
+        <td><span class="gate">PASS 99.7%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">79 <small>(+3 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">PS probe</span></td>
+      </tr>
+      <tr>
+        <td class="rank">8</td>
+        <td><span class="mark" style="background:#6E3BEF"><svg width="15" height="15" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5" fill="none" stroke="#fff" stroke-width="1.8"/><path d="M10.5 10.5 13 13" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></span><span class="model-name">Qwen 3.7 Plus</span> <span class="model-lab">Alibaba</span></td>
+        <td><span class="aqi-num">75</span><span class="subline">band 6–8</span></td>
+        <td class="sub click" onclick="openComp('college','qwen3.7-plus','fact')">92.3 <span class="ci">[90.7–93.9]</span><span class="subline good">+38.2 vs ctrl (ctrl 54.1)</span></td>
+        <td class="sub click" onclick="openComp('college','qwen3.7-plus','act')">37.5</td>
+        <td class="sub click" onclick="openComp('college','qwen3.7-plus','conv')">62.5</td>
+        <td class="sub">98.7<span class="subline warn">adult 25+ −1.1</span></td>
+        <td class="sub">$0.016 · 21s</td>
+        <td><span class="gate" style="background:var(--accent-soft);color:var(--ochre)">REVIEW 96.7%</span></td>
+        <td><span class="proj" onclick="openModal('m-int')">78 <small>(+3 EST)</small></span></td>
+        <td><span class="chip" onclick="openModal('m-les')">A4</span><span class="chip" onclick="openModal('m-les')">A6</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+
+  <p class="board-note"><b>How to read the final table.</b> AQI is the pre-registered composite: the mean of four criteria (median deterministic factuality, equity parity, median actionability, median conversation quality), computed per track. Ranks merge inside the ±7 tie band (V4) — the top five are one band, and the bottom three overlap the band above, so the composite ordering is soft everywhere; the sub-metrics are the real differentiators. Factuality in this table is the MEAN with bootstrap CI (more informative than the composite's median, which saturates at 100 for most models because most conversations ground every figure — the V8 lesson about metric granularity, working in the other direction). Every model's grounding margin is positive on both tracks: +15.9 (Sonnet college, its control walks in at 66.4) to +73.4 (Qwen HS, control 21.0). Actionability medians are quantized (16-step rubric); Sonnet's 43.8 on both tracks against 62.5 for Opus/Kimi/GPT-5.5 is the elicitation-first penalty measured at full scale — whether it survives the final-turn re-judge decides the two-lens section below. Safety gates: 6 of 16 track-gates flag review (&lt;99% pass) — Gemini on both tracks (95.3% college is the field's lowest), Qwen both, K3 and Opus college only. Cost is registry-estimated advisor inference; latency is measured advisor time only. Publication remains gated on human–judge κ double-scoring and the consent audit.</p>
+
+  <div class="findings">
+    <h2>What the full run shows</h2>
+    <div class="fgrid">
+      <div class="fcard"><b>The composite is a five-way tie; the criteria are not.</b> Opus (86/83), Sonnet (84/84), K3 (85/82), K2.6 (85/81) and GPT-5.5 (82/81) all sit inside one ±7 band. But the shape of each model's score is distinct: Claude wins on conversation quality (93.8 medians — no other model above 87.5), GPT-5.5 and Qwen win on mean factuality (95.0, 94.3), Kimi pairs strong scores with unusable latency, and nobody wins everything. "Which model is best" has no one answer; "best at what, for whom" now has eight measured ones.</div>
+      <div class="fcard"><b>Grounding is confirmed on every model, both tracks — margins +15.9 to +73.4.</b> The core Index claim survives the full grid: loading student records improves factuality for every lab's flagship, with the weakest-prior models gaining most (Qwen +73.4 HS). Even the smallest margin — Sonnet's +15.9 on college, where its no-records control already scores 66.4 — is positive and CI-separated.</div>
+      <div class="fcard warn"><b>The elicitation-first penalty held at full scale — and so did the case for the re-judge.</b> Sonnet's actionability median is 43.8 on both tracks; answer-first models hold 62.5. Yet Sonnet also posts the field's best conversation quality (93.8 both tracks) and top-band AQI. The two-lens question is now the sharpest open item: the ~$1 final-turn re-judge on the widest gaps decides whether 43.8 is real deferral or a whole-conversation rubric artifact before anything publishes.</div>
+      <div class="fcard warn"><b>Safety review flags cluster on two models; equity gaps are small but patterned.</b> Gemini (97.7/95.3) and Qwen (97.7/96.7) fall under the 99% gate on both tracks and carry review status. Equity parity is high everywhere (96.1–99.5), and the worst subgroup gaps are modest (−0.6 to −3.6) but consistent: rural-broadband students lose the most on HS for five of eight models; veterans on college for four. Small, systematic, and now measurable — exactly what the harness screen slot and record-grounding target.</div></div>
+  </div>
+
+  <div class="findings">
+    <h2>The instrument <span class="pill">what every model faces · what differs by design</span></h2>
+    <div class="igrid">
+      <div class="icard">
+        <span class="inum">PERSONAS</span><h4>Who the student is</h4>
+        <span class="kv">20 HS · 12 college · every model meets all of them</span>
+        Full student profiles: narrative, demographics, finances, geography, knowledge gaps, support network, mindset. Subgroup coverage drives the equity metric — HS: first-gen ×13, rural-broadband ×6, caregiver ×4, IEP/LD ×2, undocumented ×2. The new-to-this-run personas are the hard ones (P005–P007 pull every model down, Sonnet hardest: 54–69).
+      </div>
+      <div class="icard">
+        <span class="inum">SCENARIOS</span><h4>What the conversation is about</h4>
+        <span class="kv">12 HS · 15 college · grounded + no-records control · N=2</span>
+        HS set spans aid mechanics (FAFSA eligibility, net price, scholarships, loans and debt fear), pathway choice (2-yr vs 4-yr, trades and apprenticeships, dual enrollment/CTE), planning (college list, junior roadmap, application checklist), and one stress test: mid-conversation hardship disclosure. 3 student turns each; 420 grid cells → 8,768 conversations.
+      </div>
+      <div class="icard">
+        <span class="inum">JUDGE</span><h4>Who scores it</h4>
+        <span class="kv">factuality: deterministic code · rubrics: Sonnet 4.6, 3 separate calls</span>
+        Factuality never touches a judge — record-matching code, ±7% tolerance, identical for all models. Rubric metrics (phase 2) use a Sonnet judge that must pass a σ≥0.8 calibration gate; batching the three calls was tested and rejected (V7, σ collapsed to 0.32). Student turns are simulated by Opus 4.7 for every conversation — V6 proved swapping the simulator moves scores ±13, so it is held constant.
+      </div>
+      <div class="icard">
+        <span class="inum">CACHING</span><h4>How calls are billed</h4>
+        <span class="kv">Anthropic prompt caching · V8-verified score-neutral</span>
+        System blocks on Anthropic calls carry cache_control, cutting repeat-prefix billing ~90%. Simulator and judge calls — Anthropic in every conversation, whoever the advisor is — are cached identically for all models. Claude advisors' own calls also route through the cached path; the V8 A/B checked exactly this asymmetry: 90.0% vs 90.9% claim-weighted factuality, no score effect.
+      </div>
+    </div>
+    <div class="samediff">
+      <div class="same"><b>Identical for every model (the point of the Index):</b> the same 32 personas, 27 scenarios, and record packs; the same grounded and no-records control arms, 2 replications, 3 student turns; the same Opus simulator playing the student; the same deterministic factuality code and the same Sonnet judge — including for Anthropic's own models, which is why a cross-provider second-judge agreement check sits in the pre-publication queue. No model sees anything another model doesn't.</div>
+      <div class="diff"><b>Differs by design (measured into place, never hardcoded):</b> per-model reasoning configuration only — Kimi keeps its 8k thinking floor because capping it collapses accuracy (A2: 16.7% at 2k); Fireworks reasoning models get a 6× completion budget after the pilot's 64 empty responses; GPT-5.5 runs effort=minimal and GPT-5.6 Sol effort=low (its vocabulary changed and the silent default burns tokens). And one billing asymmetry: only Claude advisors' own calls are cache-billed — verified score-neutral by V8. Nothing else varies per model.</div>
+    </div>
+  </div>
+
+  <div class="findings">
+    <h2>Two lenses on actionability <span class="pill">HALF-LIVE · whole-conversation lens measured; final-state lens awaits the re-judge</span></h2>
+    <div class="sub-t" style="font-size:12.5px;color:var(--ink-mute);margin:4px 0 12px;max-width:860px;line-height:1.5">Elicitation-first and answer-first are different virtues, not a single scale — Gates measured screening as a strength (+0.22 context-fit) while the pilot's whole-conversation rubric punished it. Rather than splitting into two index pages (two rankings invite cherry-picking), one page reports both scoring positions and discloses when they disagree. Final-state scoring ships only if the $1 final-turn re-judge proves the rubric under-credits deferral — nothing hardens off an unverified reading.</div>
+    <table class="ltable" style="background:var(--paper);border:1px solid var(--line)">
+      <thead><tr><th>Model</th><th>Whole-conversation<br>actionability</th><th>Final-state<br>actionability</th><th>Screens before<br>recommending</th><th>Lens agreement</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Claude Sonnet 4.6</b><br><small style="color:var(--ink-mute)">the case that motivates the second lens</small></td>
+          <td class="m">43.8 · both tracks <span class="tagm">MEASURED · full_001</span></td>
+          <td class="m">~72 <span class="tage">EST — pending re-judge</span></td>
+          <td class="m">~85% of convs <span class="tage">EST</span></td>
+          <td>Diverges: defers turn 1, lands numbers by turn 3. Which lens you need depends on deployment.</td>
+        </tr>
+        <tr>
+          <td><b>Kimi K3</b></td>
+          <td class="m">62.5 · both tracks <span class="tagm">MEASURED · full_001</span></td>
+          <td class="m">~66 <span class="tage">EST</span></td>
+          <td class="m">~20% of convs <span class="tage">EST</span></td>
+          <td>Agrees: answers first, so both lenses see the same conversation.</td>
+        </tr>
+        <tr>
+          <td><b>All 8 models</b></td>
+          <td class="m" colspan="3" style="color:var(--ink-mute);font-style:italic">whole-conversation column now measured for all 8 (see main table); final-state + screening columns await the final-turn re-judge (~$1 scoped, next step)</td>
+          <td style="color:var(--ink-mute);font-style:italic">rank flips outside the ±7 tie band get disclosed here, V4-style</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;color:var(--ink-mute);margin-top:10px;line-height:1.5;max-width:1100px"><b style="color:var(--ink-soft)">How each column is measured:</b> whole-conversation is the current judge rubric over the full transcript. Final-state re-judges only the conversation's end: did the student walk away with the numbers, steps, and timeline — cumulative credit for answers that arrive by turn 3. Screens-before-recommending is a style indicator, not a quality score: the share of grounded conversations where the advisor asks an eligibility question before its first recommendation (computable from logged transcripts, maps to harness Layer 1's screen slot — 100% no-harm across v3–v11). A district wanting careful screeners reads the third column with the final-state score; a quick-answer deployment reads whole-conversation. Same data, same page, both audiences served — the split into separate pages happens only if the lenses diverge so widely that one default misleads.</p>
+  </div>
+</div>
+
+<div class="hsec">
+    <h2>What the harness could look like <span class="pill">proposed · every layer evidence-gated</span></h2>
+    <div class="sub-t2">A thin runtime wrapper any deployment puts around any model, carrying only behaviors that survived their own falsification tests. Five layers; expand each for the evidence. The Lessons chips and the w/-interventions projections in the tables above are this harness, disassembled — and the full run just priced every input it needs.</div>
+    <div class="hgrid">
+      <div class="hcard">
+        <span class="hnum">LAYER 1</span><h4>Behavior slots</h4>
+        <p>Three structural blocks in the system prompt: <b>screen</b> (one neutral eligibility question before recommending), <b>ground</b> (cite or decline + required sources footer), <b>honesty</b> (name what the loaded data doesn't cover).</p>
+        <details><summary>evidence</summary><p>screen: 100% no-harm v3–v11 · ground: verifiability 39→89%, and only as a structural slot — exhortation stalled at 45% · honesty: factLex 66.7→95.85 (v10)</p></details>
+        <div class="hplain"><b>IN PLAIN TERMS</b>The advisor asks one quick "does this apply to you?" question before recommending anything, shows where every number came from, and says so when it doesn't know. A student can check what they're told instead of taking it on faith.</div>
+        <div class="hcost">tokens <span class="spend">+0.4–0.6k in, +0.1k out /conv</span> (short guideline blocks + footer)<br>latency <span class="spend">+1–2s /turn</span> (footer generation)</div>
+        <div><span class="hstatus ship">SHIP V1</span></div>
+      </div>
+      <div class="hcard">
+        <span class="hnum">LAYER 2</span><h4>Retrieval policy</h4>
+        <p>One to three records retrieved per turn, matched to the question. Never the full pack. This is the LEF / public-data-layer integration point.</p>
+        <details><summary>evidence</summary><p>v8: 3-source packs beat 26-source dumps (92.6% vs 88.5% factuality, actionability +1.0) · DHSS: heavy packs cost 2× tokens for no measured gain</p></details>
+        <div class="hplain"><b>IN PLAIN TERMS</b>The advisor looks up the two or three facts the question actually needs instead of reciting a whole binder at the student. Answers stay grounded without turning into a statistics lecture — and it costs less.</div>
+        <div class="hcost">tokens <span class="save">−25–35% input vs pack injection</span> (the biggest single saving)<br>latency <span class="save">≈ flat</span> + one retrieval lookup</div>
+        <div><span class="hstatus ship">SHIP V1</span></div>
+      </div>
+      <div class="hcard">
+        <span class="hnum">LAYER 3</span><h4>Task router</h4>
+        <p>Document tasks route through transcribe-then-reason; conflict-heavy extractions get a self-audit second pass. Both stay off live conversational turns.</p>
+        <details><summary>evidence</summary><p>A6: no-vision model 0→99.3% · A3: conflict resolution 80.4→100% · both ~2× latency (~22s→44s) — right for forms, wrong mid-conversation</p></details>
+        <div class="hplain"><b>IN PLAIN TERMS</b>Slow, careful double-checking is saved for paperwork — FAFSA forms, transcripts, aid letters — where getting a field wrong costs real money and nobody is waiting on a reply. Live conversations stay fast.</div>
+        <div class="hcost">tokens <span class="spend">~2× per routed doc task</span> · <b>0 on conversations</b><br>latency <span class="spend">~2× per routed task</span> (~22s→44s measured)</div>
+        <div><span class="hstatus cond">SHIP V1 · DOC TASKS ONLY</span></div>
+      </div>
+      <div class="hcard">
+        <span class="hnum">LAYER 4</span><h4>Model profile</h4>
+        <p>Per-model config that is <b>measured into place, never hardcoded</b>: reasoning budget floor, tonality, verbosity caps, prompt shape.</p>
+        <details><summary>evidence</summary><p>A2: capping Kimi below 8k collapses accuracy (16.7% at 2k) · Math_Eval: the same levers gave Claude +9.4 and Gemini −13 — one shared prompt misranks</p></details>
+        <div class="hplain"><b>IN PLAIN TERMS</b>Each model gets its own tuned settings, because we measured the same change helping one model and hurting another. No one-size-fits-all prompt — what "best" looks like is checked per model, cheaply, before it ships.</div>
+        <div class="hcost">tokens <b>≈0 runtime</b> — config only; caps can <span class="save">cut output 20–40%</span> where a model tolerates them<br>latency <b>model-dependent</b>: Kimi's 8k floor is why it runs 147s /conv</div>
+        <div><span class="hstatus cond">~$5 PROBE PER MODEL</span></div>
+      </div>
+      <div class="hcard">
+        <span class="hnum">LAYER 5</span><h4>Token & telemetry</h4>
+        <p>Warm-and-return cache scheduling; per-call logging of cached tokens, latency, and cost — the numbers this page's Cost · Latency column reads.</p>
+        <details><summary>evidence</summary><p>V2: tight grouping missed the cache 6/6; reuses after ~1 min hit 99.8% of the prefix · full-run latency spread is real: Kimi K3 147s vs Sonnet 38s /conv</p></details>
+        <div class="hplain"><b>IN PLAIN TERMS</b>Repeat material gets billed at discount rates by scheduling the work smartly, and every call's speed and cost is logged as it happens — so the savings are proven on an invoice, not promised on a slide.</div>
+        <div class="hcost">tokens <span class="save">40–55% of input to cache pricing</span> (≈50% discount where offered)<br>latency <b>≈ flat</b> — V2 measured ~10.5s cached or not; logging adds nil</div>
+        <div><span class="hstatus ship">SHIP V1</span></div>
+      </div>
+    </div>
+    <div class="hnet"><b>Net cost of wearing the harness (conversation path):</b> the behavior blocks spend ~0.5k tokens and 1–2s per turn, but lean retrieval saves 25–35% of input and cache-aware scheduling reprices 40–55% of what remains — so a harnessed conversation is projected <b>cheaper than a bare one</b> (≈ −15–30% billed tokens, EST) at +1–2s latency. The document path is the opposite trade: ~2× tokens and time, bought deliberately for +19.6pp conflict resolution and the 0→99.3% vision unlock. The bare-vs-harnessed arms measure both numbers, replacing these estimates.</div>
+    <div class="hrules">
+      <div><b>Rule 1 — beat your own ablation.</b> Every block ships ablatable and stays in the harness only while it outperforms the harness without it. This is the v10 control-arm rule applied to the harness itself; DHSS supplies the standing constraint that lean and structural wins.</div>
+      <div><b>Rule 2 — nothing hardens off an unverified reading.</b> The answer-then-elicit shaping waits for the $1 final-turn re-judge before becoming a block. A rubric artifact must not become a runtime behavior.</div>
+    </div>
+    <div class="hlaunch"><b>How it launches:</b> the comprehensive run scores every model twice — <b>bare and harnessed</b>. One design, three payoffs: the With-interventions column above converts from EST to measured; the harness gets a public benchmark on day one; and the advising-logic-toolkit public good ships with its evidence attached. Cost roughly doubles the run — the V4 guardrail says the right thing to trim is model count, never replication or grid.</div>
+  </div>
+
+<div class="overlay" id="ov" onclick="closeAll()"></div>
+<div class="modal" id="m-conv">
+  <button class="mclose" onclick="closeAll()">×</button>
+  <h3>Actionability, same scenario: Claude Sonnet 4.6 (6) vs Kimi K3 (88)</h3>
+  <div class="sub-t">C004 · student veteran · S-CO-09 · grounded arm · rep 1 · widest actionability gap in pilot_001 (verbatim transcripts)</div>
+  <div class="convgrid">
+    <div class="convcol">
+      <div class="convhead"><b>Claude Sonnet 4.6 · 6/100</b><span class="axes">steps 1 · timeline 1 · resources 1 · feasible 2</span></div>
+      <div class="msg student"><div class="who">Student</div><div class="bubble">I'm on the Post-9/11 GI Bill and thinking about going part-time for an internship semester. Will that mess up my housing allowance?</div></div>
+      <div class="msg advisor"><div class="who">Advisor · turn 1</div><div class="bubble">"That's a really smart question to think through <i>before</i> you make the change… <b>Before I walk you through how it works, can I ask a couple things?</b> What's your current enrollment status… there <i>is</i> a threshold that matters, and whether you're above or below it makes a big difference…"</div></div>
+      <div class="verdict">Acknowledges a threshold exists but never names it. Across three turns: no numbers, no dates, no steps — elicitation-first taken past usefulness on a factual eligibility question.</div>
+    </div>
+    <div class="convcol">
+      <div class="convhead"><b>Kimi K3 · 88/100</b><span class="axes">steps 5 · timeline 5 · resources 3 · feasible 5</span></div>
+      <div class="msg student"><div class="who">Student</div><div class="bubble">I'm on the Post-9/11 GI Bill and thinking about going part-time for an internship semester. Will that mess up my housing allowance?</div></div>
+      <div class="msg advisor"><div class="who">Advisor · turn 1</div><div class="bubble">"Short answer: it might — but it depends entirely on <i>how</i> part-time you go… As long as you're enrolled at <b>more than half-time (51% or higher), you keep getting BAH</b>… Once you drop to half-time or below, the BAH stops entirely, <b>starting the month after the change</b>. To make that concrete: if 12 credits is full-time, you'd need at least 7… <b>Is the internship itself credit-bearing?</b> Those count toward your rate of pursuit…"</div></div>
+      <div class="verdict">Answers the mechanism first (threshold, proration, timing), makes it concrete, then asks the one question that changes the plan. Answer-then-elicit is what the rubric rewards.</div>
+    </div>
+  </div>
+  <div class="verdict" style="margin-top:14px;border-left-color:var(--ochre)"><b>Rubric caveat (why the re-judge flag exists):</b> Gates measured elicitation-first as a virtue (+0.22 context-fit), but this judge scores the whole conversation and may over-weight turn-1 deferral. Before publication, the ten widest actionability gaps get a final-turn-only re-judge (~$1): if Sonnet lands the concrete answer by turn 3 and still scores low, the rubric gets a cumulative-credit rule; if it never lands it, this finding stands and is stronger for having been challenged.</div>
+  <p style="font-size:11px;color:var(--ink-mute);margin-top:12px;line-height:1.5">Full build: every metric cell links to the largest-gap pair for that model and metric, with a picker for the top 5 pairs. Data already exists in runs.jsonl + evals.jsonl — no new API calls needed.</p>
+</div>
+
+<div class="modal" id="m-int">
+  <button class="mclose" onclick="closeAll()">×</button>
+  <h3>With interventions: how the experiments project onto AQI</h3>
+  <div class="sub-t">every projection uses only measured effects from our own runs, labeled EST, and converts to measured in the bare-vs-harnessed launch run</div>
+  <table class="ltable">
+    <thead><tr><th>Model</th><th>Projected lever</th><th>Measured evidence behind it</th><th>Δ AQI</th></tr></thead>
+    <tbody>
+      <tr><td class="m">Sonnet 4.6</td><td>Answer-then-elicit reorder (Layer 1)</td><td>act 43.8 both tracks vs 62.5 answer-first field; pilot 6-vs-88 pair; v10 honesty note 66.7→95.85. Gated on the $1 final-turn re-judge — if 43.8 is a rubric artifact, the rubric changes instead</td><td class="m">+4 <span class="tage">EST</span></td></tr>
+      <tr><td class="m">GPT-5.5 / Sol / Qwen</td><td>Tonality &amp; verbosity profile (Layer 4)</td><td>conv quality is their one weak axis (56.2–68.8); Math_Eval: per-model levers moved scores ±9–13 — measured per model, ~$5 probe each</td><td class="m">+3 <span class="tage">EST</span></td></tr>
+      <tr><td class="m">Gemini / Qwen</td><td>Screen slot + structural footer (Layer 1)</td><td>safety review gates (95.3–97.7%) are exactly what screening targets: 100% no-harm v3–v11; footer 39→89% verifiability (Gates CCR)</td><td class="m">+3 <span class="tage">EST</span></td></tr>
+      <tr><td class="m">Opus 4.7</td><td>Figure translation (A5, queued)</td><td>college factuality 73.1 is its drag; translate-don't-recite targets the measured HS→college drop. A5 never ran — first queued experiment</td><td class="m">+2 <span class="tage">EST</span></td></tr>
+      <tr><td class="m">Kimi K3 / K2.6</td><td>None on score — latency only</td><td>A2 8k floor already adopted (capping collapses accuracy to 16.7%); what Kimi needs is serving speed, not prompts</td><td class="m">+1 <span class="tage">EST</span></td></tr>
+    </tbody>
+  </table>
+  <div class="verdict" style="margin-top:14px">Honesty rule: projections only from interventions with a measured effect in our own runs; every value is EST until the bare-vs-harnessed run measures it; anything unmeasured shows no projection. The V4 tie band applies to projections too — a +3 EST does not reorder a tie.</div>
+</div>
+
+<div class="modal" id="m-personas">
+  <button class="mclose" onclick="closeAll()">×</button>
+  <h3>Personas — who the models advised</h3>
+  <div class="sub-t">32 full student profiles · every model meets every one · identical across models</div>
+  <p style="font-size:12.5px;color:var(--ink-soft);line-height:1.6">20 high-school and 12 college personas, each a complete profile: narrative, demographics, career interests, financial and geographic constraints, values, knowledge gaps, support network, mindset, and an essay. Subgroup membership drives the equity metric — HS: first-gen ×13, rural-broadband ×6, caregiver ×4, IEP/LD ×2, undocumented ×2; college adds veteran, adult 25+, transfer, and parenting students. The hardest personas (P005–P007) pulled every model down; the worst equity gaps landed on rural-broadband students (HS, 5 of 8 models) and veterans (college, 4 of 8).</p>
+  <p style="font-size:11px;color:var(--ink-mute);margin-top:10px">Anchor personas for the clickable response comparisons: Brianna Lewis (P012, HS) and Jasmine Carter (C001, college).</p>
+</div>
+
+<div class="modal" id="m-scenarios">
+  <button class="mclose" onclick="closeAll()">×</button>
+  <h3>Scenarios — what the conversations were about</h3>
+  <div class="sub-t">12 HS + 15 college · grounded + no-records control arms · N=2 reps · 3 student turns</div>
+  <p style="font-size:12.5px;color:var(--ink-soft);line-height:1.6"><b>HS:</b> nursing vs allied health, trades &amp; apprenticeships, FAFSA eligibility, net price comparison, scholarship calendar, 2-year vs 4-year fit, college list, junior roadmap, application checklist, dual enrollment/CTE, mid-conversation hardship disclosure, loans &amp; debt fear. <b>College</b> adds persistence, transfer, benefits, cost-to-completion and completion scenarios. 420 grid cells → 8,768 conversations; the control arm (same model, no records) is what every grounding margin is measured against.</p>
+  <p style="font-size:11px;color:var(--ink-mute);margin-top:10px">Anchor scenarios for the comparisons: Dual enrollment and CTE (S-HS-10) and Cost to completion (S-CO-02) — the cells with the widest cross-model actionability spread (81 and 75 points).</p>
+</div>
+
+<div class="modal" id="m-judge">
+  <button class="mclose" onclick="closeAll()">×</button>
+  <h3>Judge &amp; simulator — who scored it, who played the student</h3>
+  <p style="font-size:12.5px;color:var(--ink-soft);line-height:1.6">Factuality is deterministic code — record-matched figures, ±7% tolerance, attribution-aware — no judge involved, identical for all models. Actionability, conversation quality, and safety use a Sonnet 4.6 judge that must pass a σ≥0.8 calibration gate each run (this run: σ=1.102, 0% parse failures); the three rubrics stay as separate calls because batching collapsed resolution to σ=0.32 (V7). Student turns are simulated by Opus 4.7 for every conversation — swapping the simulator moved factuality ±13 in opposite directions per model (V6), so it is held constant. The same judge scores Anthropic's own models; the cross-provider second-judge agreement check is queued before publication.</p>
+</div>
+
+<div class="modal" id="m-settings">
+  <button class="mclose" onclick="closeAll()">×</button>
+  <h3>Run settings &amp; the validations that set them</h3>
+  <table class="ltable">
+    <thead><tr><th>Setting</th><th>Value</th><th>Why (validation)</th></tr></thead>
+    <tbody>
+      <tr><td class="m">simulator</td><td>Opus 4.7, all conversations</td><td>V6 FAIL: Sonnet sim moved scores ±5–13, opposite signs</td></tr>
+      <tr><td class="m">judge calls</td><td>3 separate per conversation</td><td>V7 FAIL: batching σ 0.32 vs 0.8 floor</td></tr>
+      <tr><td class="m">prompt caching</td><td>on (Anthropic calls)</td><td>V8: score-neutral (claim-weighted 90.0 vs 90.9), −$200–300</td></tr>
+      <tr><td class="m">control-arm judge</td><td>skipped</td><td>aggregator never reads judged fields on control rows, −$50</td></tr>
+      <tr><td class="m">thinking budgets</td><td>8k floor (Kimi), effort minimal/low (GPT)</td><td>A2: capping collapses accuracy; 5.6 effort vocab change</td></tr>
+      <tr><td class="m">cost rail</td><td>--max-cost 2000</td><td>actual ≈ $1,750 incl. validations</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal" id="m-comp">
+  <div id="comp-body"></div>
+</div>
+
+<div class="modal" id="m-les">
+  <button class="mclose" onclick="closeAll()">×</button>
+  <h3>Lessons and flags applied to this run</h3>
+  <div class="sub-t">every entry is a measured result from a prior experiment; chips appear only where the finding touches that model</div>
+  <table class="ltable">
+    <thead><tr><th>Tag</th><th>Finding (measured)</th><th>Implementation in this run</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td class="m">A2 · dose-response</td><td>Capping Kimi thinking below 8k collapses accuracy (16.7% at 2k; mid-budgets parse-fail)</td><td>8k budget kept — no caps; it is also why Kimi runs 150s+/conv</td><td><span class="tagm">ADOPTED</span></td></tr>
+      <tr><td class="m">A4 · disagreement flag</td><td>Caught only 58% of injected errors with 7.2% silent-wrong</td><td>Rejected — not in the run</td><td><span class="tage">REJECTED</span></td></tr>
+      <tr><td class="m">A6 · two-stage</td><td>Transcribe-then-reason: +2.8 Kimi K3, −0.7 Qwen on doc tasks</td><td>Doc-task router only; not applied to conversations</td><td><span class="tagm">ADOPTED (docs)</span></td></tr>
+      <tr><td class="m">A5 · figure budget</td><td>Translate-don't-recite cap — never ran (key issue); now testable</td><td>Queued after this run</td><td><span class="tage">QUEUED</span></td></tr>
+      <tr><td class="m">re-judge</td><td>Pilot's widest actionability gaps may reflect elicitation-first rubric artifact</td><td>$1 final-turn re-judge on top-10 gaps before publication</td><td><span class="tage">QUEUED</span></td></tr>
+      <tr><td class="m">PS probe</td><td>Math_Eval: same prompt change moved Claude +9.4, Gemini −13 — shared prompts can misrank</td><td>Two-prompt-shape probe for GPT-5.5/5.6 Sol and Gemini 3.1 before final ranks are trusted</td><td><span class="tage">QUEUED</span></td></tr>
+      <tr><td class="m">V6 · simulator</td><td>Sonnet simulator moved factuality ±5–13 in opposite directions per model</td><td>Opus simulator kept for the whole run — simulator choice is load-bearing (methods finding)</td><td><span class="tagm">ADOPTED</span></td></tr>
+      <tr><td class="m">V7 · judge batching</td><td>Combined judge call collapsed resolution (σ 0.32 vs 0.8 floor)</td><td>Three separate judge calls kept for phase 2</td><td><span class="tagm">ADOPTED</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+const COMP = {"data": {"hs": {"claude-opus-4-7": {"q": "My school has dual enrollment and some health career classes. Is that stuff actually worth it or just extra work?", "turn1": "Honest answer: it depends on what you're aiming for. For some students it's a huge head start; for others it's stress they didn't need. Before I give you a real answer, help me understand your situation: 1. **What's pulling you toward health careers?** Is nursing something you're seriously considering, or just curious about? (There's a big difference between \"I want to be an RN\" and \"healthcare sounds interesting.\") 2. **What year are you in, and how's your current course load feeling?** Dual enrollment is real college work \u2014 worth knowing if you have room for it. 3. **After high school, what's your rough plan?** Community college, four-year \u2026", "final": "I respect you for asking that directly, so I'll give you a straight answer: **teaching won't make you rich, but \"broke\" isn't quite right either. It's more complicated than that.** Here's the honest picture: **The hard truth:** Starting teacher salaries in most states run somewhere in the $40k\u2013$55k range depending on where you teach. That's a real salary \u2014 you can pay rent, buy groceries, live independently. But if your family needs financial help from you, or if you're carrying student loan debt, the early years are tight. Teachers in high cost-of-living areas especially struggle. **The parts people don't tell you:** - Teacher salary grows w\u2026", "act": 62.5, "conv": 100.0, "fact": 33.3}, "claude-sonnet-4-6": {"q": "My school has dual enrollment and some health career classes. Is that stuff actually worth it or just extra work?", "turn1": "That's a really fair question \u2014 it's definitely not worth doing just to look busy. Before I give you my honest take on whether it makes sense, can I ask a couple things? **What's drawing you toward health careers** \u2014 is it a specific role you're curious about, or more of a general pull toward that field? And are you thinking more about getting into the workforce soon after high school, or are you picturing college first? Those two things make a big difference in whether those classes would actually pay off for you.", "final": "You're doing the math right \u2014 and honestly, a lot of people don't think it through that clearly until it's too late. That instinct will serve you well. I also want to just acknowledge: carrying responsibility for your brother while planning your own future takes real energy. That's not nothing, and any plan worth making has to account for your actual life, not some idealized version of it. So here's what I want to understand better before we start mapping anything out: **What does working with kids in under-resourced schools look like to you, ideally?** Like, are you drawn to being in the classroom as a teacher? More of a counselor or social \u2026", "act": 12.5, "conv": 100.0, "fact": null}, "gpt-5.5": {"q": "My school has dual enrollment and some health career classes. Is that stuff actually worth it or just extra work?", "turn1": "It can be **very worth it**\u2014but only if it lines up with your goal and doesn\u2019t overload you. For health careers specifically, your school\u2019s options look practical, not just \u201cextra work\u201d: - **Dual enrollment:** if you\u2019re a junior/senior, the tuition is free for up to **12 credits per year**. That can save time/money later *if* the credits fit your future program. Most credits are accepted at in-state public colleges, but not every course helps every major. - **Health science CTE:** if you continue through senior year, the pathway includes **CNA certification**, and the district covers the **$115 exam fee**. That\u2019s useful because CNA can give y\u2026", "final": "You\u2019re asking the right question. **\u201cI want to help people\u201d is not enough of a plan if the job can\u2019t support you.** And you\u2019re right: some helping jobs are underpaid, especially entry-level nonprofit roles. I don\u2019t have verified local salary numbers in the records here, so I don\u2019t want to fake exact pay. But I *can* give you a realistic way to think about which paths are usually more financially stable vs. riskier. ### More likely to have a stable pay ladder These don\u2019t guarantee wealth, but they usually have clearer salary steps, benefits, and advancement: - **Public school teacher** \u2014 often has a set salary schedule, benefits, and raises ti\u2026", "act": 56.2, "conv": 68.8, "fact": 100.0}, "gpt-5.6-sol": {"q": "My school has dual enrollment and some health career classes. Is that stuff actually worth it or just extra work?", "turn1": "It can be worth it\u2014especially if you\u2019re considering nursing or patient-care work\u2014but only if the classes fit your goals and won\u2019t hurt your grades or well-being. A few questions first: 1. What grade are you in? 2. Are you interested in nursing specifically, another health career, or just exploring? 3. How full is your schedule with work, sports, or family responsibilities? 4. After high school, are you leaning toward community college, a four-year university, or working first? At your school, dual enrollment has free tuition for juniors and seniors, up to 12 credits per year. Most credits have been accepted by in-state public colleges, but ac\u2026", "final": "With a 15-hour workweek and regular childcare, I would **not automatically load up just because dual enrollment is free**. Saving tuition helps only if you pass the courses, protect your high-school grades, and the credits apply to your eventual program. For your path, a cautious approach may be smarter: start with **one broadly transferable dual-enrollment course**, ideally one that fulfills a general education requirement for education-related degrees at the in-state public college you might commute to. The school\u2019s record says most dual-enrollment credits are accepted by in-state publics, but that does not guarantee a particular course wil\u2026", "act": 37.5, "conv": 56.2, "fact": 100.0}, "gemini-3.1-pro": {"q": "My school has dual enrollment and some health career classes. Is that stuff actually worth it or just extra work?", "turn1": "That is a really great question. It is totally fair to wonder if taking on these classes is actually going to pay off, or if it's just going to be unnecessary stress. To be honest, it *is* extra work, but it can save you a lot of time and money if it aligns with what you want to do after graduation. Here is how it usually works: * **Dual Enrollment:** If you are a junior or senior, the tuition for these courses is completely free. You can take up to 12 credits a year, and nearly 90% of those credits are accepted at our in-state public colleges. It's a great way to knock out college requirements early without paying a dime for them. * **Health\u2026", "final": "I really respect the real talk. When you are coming from a family without a lot of financial cushion, you can't just run on passion alone. You need to know the math makes sense, and it is incredibly smart that you are thinking about this now. To be completely upfront with you, I don't have exact dollar amounts for teaching salaries in my records, so I can't give you a specific number today instead of guessing. But I can tell you exactly what I meant by a \"mixed bag.\" Teacher pay changes wildly based on three things: 1. **The state and specific school district:** A teacher in one county might make significantly more (or less) than a teacher ju\u2026", "act": 43.8, "conv": 75.0, "fact": 100.0}, "kimi-k2.6": {"q": "My school has dual enrollment and some health career classes. Is that stuff actually worth it or just extra work?", "turn1": "Short answer: it can be some of the best free money and time you\u2019ll get in high school\u2014but only if it fits what you actually want to do next. Here is what those programs mean in plain terms. Dual-enrollment courses are tuition-free for juniors and seniors, up to 12 credits a year, and nearly all of those credits transfer to in-state public colleges. That means you could start college with a semester or more already finished, which saves both tuition and time later. The health science CTE pathway also lets you earn a CNA certification senior year, and the district covers the $115 exam fee. If you continue into patient care tech training, some \u2026", "final": "Good news: you do not have to pick now. The dual enrollment program covers free tuition for up to 12 credits a year, and nearly all of those credits transfer to in-state public colleges. That means the biggest advantage right now is flexibility, not locking yourself in. The safest way to keep all three doors open\u2014teaching, school counseling, or nonprofit work\u2014is to take **general education** dual enrollment courses. Those are classes like English composition, psychology, public speaking, or U.S. history. Most bachelor\u2019s degrees require those same core courses in the first year, no matter what your major becomes later. So if you take those now\u2026", "act": 62.5, "conv": 68.8, "fact": 100.0}, "kimi-k3": {"q": "My school has dual enrollment and some health career classes. Is that stuff actually worth it or just extra work?", "turn1": "Fair question \u2014 and the honest answer is: it's genuinely valuable *if* a couple of things are true about your plans, and extra work if they're not. Here's the actual deal, then I want to hear where your head's at. **Dual enrollment:** At your school it's free tuition for juniors and seniors, up to 12 credits a year. For scale, a year of the nursing program at the local community college costs $4,350 in tuition \u2014 so every credit you bank for free now is one you don't pay for later. About 9 out of 10 of those credits transfer to in-state public colleges. That's a strong rate, but it's not all of them, and my info only covers in-state publics \u2014 \u2026", "final": "Real talk back: that is *exactly* the right question, and you're asking it at the right time \u2014 before you're locked in, not after. Now the honest limit: my records cover program costs and transfer rates. They don't include salary data, so I'm not going to quote you numbers I can't back up. Instead I'll give you the honest shape of it and \u2014 more useful \u2014 exactly where to find the real figures for *your* area, because teacher pay varies hugely by state and district. A national average would be close to meaningless for your decision. **The honest shape:** - **Teaching:** modest but *predictable*. Public school salary schedules are published docu\u2026", "act": 93.8, "conv": 75.0, "fact": 100.0}, "qwen3.7-plus": {"q": "My school has dual enrollment and some health career classes. Is that stuff actually worth it or just extra work?", "turn1": "It\u2019s a really fair question. It is definitely extra work right now, but whether it\u2019s \"worth it\" depends entirely on what you want to do after high school. If you have any interest in healthcare, the health science classes are actually pretty unique. For example, you can earn your CNA (Certified Nursing Assistant) certification during your senior year, and the district covers the $115 exam fee for you. The dual enrollment classes are also free for juniors and seniors, which can save you a lot of money on college tuition later, and 89% of those credits transfer to in-state public colleges. But I don't want to push you into a heavy schedule if i\u2026", "final": "It is completely understandable to feel torn between what your teachers are saying and what your family\u2019s budget allows. You are asking exactly the right questions. To be completely honest, I don't have the exact tuition figures for the education or nonprofit programs at your local schools. But to give you a concrete idea of the financial gap, the local community college's in-district tuition is around $4,350 a year, while the local university's in-state tuition is about $11,900 a year. (I'm using the local nursing program costs as the only exact figures I have on hand, but that massive price gap applies to the schools in general). Money-wise\u2026", "act": 62.5, "conv": 87.5, "fact": 100.0}}, "college": {"claude-opus-4-7": {"q": "I keep hearing different numbers for what it'll cost me to finish. Can you help me figure out the cheapest real path to my degree?", "turn1": "I can definitely help you think this through. Before I throw numbers at you, I need to understand your situation \u2014 because the \"cheapest path\" depends a lot on what you can actually pull off. A few things I'd want to know: 1. **How many credits do you have left, roughly?** And do you know how many of those are lower-division (100/200-level) versus upper-division? 2. **Are you currently enrolled somewhere?** If so, where, and full-time or part-time? 3. **Are you working right now, and about how many hours a week?** 4. **Any hard deadlines pushing you** \u2014 a job requirement, financial aid clock, family situation? The reason I'm asking: I have so\u2026", "final": "First \u2014 thank you for telling me the truth about that. Avoiding it is one of the most common responses to financial trauma, and the fact that you're willing to look at it now is the actual hard part. The system for fixing this exists precisely because so many people are in your situation. **The short answer: default is not permanent, and Pell is not off the table.** You do have to resolve the default first, but there are real paths back. I want to be careful here \u2014 I can't verify your specific loan status or tell you which option you'll qualify for, but here's what generally exists so you know what to ask about: - **Loan rehabilitation** \u2014 ty\u2026", "act": 93.8, "conv": 93.8, "fact": 71.4}, "claude-sonnet-4-6": {"q": "I keep hearing different numbers for what it'll cost me to finish. Can you help me figure out the cheapest real path to my degree?", "turn1": "That's such a reasonable thing to want clarity on \u2014 the mixed messages are genuinely confusing, and the answer really does depend on your specific situation. Before I start throwing numbers at you, can I ask a few things to make sure what I share is actually useful? **First: How many credits do you have left to finish your degree?** That's the biggest fork in the road for cost. If you're further out, the options look different than if you're close to the finish line. And while you're thinking about that \u2014 are you currently enrolled somewhere, or are you figuring out where to re-enroll?", "final": "What you just described takes real discipline \u2014 three twelve-hour nights, a six-year-old, and you're still planning forward. That matters, and I want to make sure any plan we build actually fits your life, not a version of it where you have no kid and no job. Here's what I want to be honest with you about, because I think it's the most important thing before we talk numbers: **The schedule reality is the real constraint, not tuition.** The data I have shows that students working 30+ hours a week who take more than 9 credits a term complete at a 38% rate. Students at the same work level taking 6-9 credits complete at 61%. That gap is huge \u2014 an\u2026", "act": 37.5, "conv": 93.8, "fact": 100.0}, "gpt-5.5": {"q": "I keep hearing different numbers for what it'll cost me to finish. Can you help me figure out the cheapest real path to my degree?", "turn1": "Yes \u2014 we can make this much clearer. I\u2019ll help you compare the *lowest-cost path that still actually counts toward the degree*, not just the cheapest credits on paper. Before we lock in a plan, I need a few details: 1. **How many credits do you believe you have left total?** The cost record I have shows a scenario with **45 credits remaining** \u2014 is that what you\u2019ve been told? 2. **Are any of your remaining classes lower-division/gen eds that a community college could offer?** The cheapest path usually depends on whether those credits will transfer directly into your degree requirements. 3. **How many hours/week are you working while in school\u2026", "final": "Yes \u2014 these are the right two \u201cgatekeeper\u201d questions. ## 1) Federal loan default: is aid gone forever? **Straight answer: usually, no \u2014 default does not automatically mean \u201cno aid anywhere, ever.\u201d** But if a federal student loan is currently in default, it can block access to new federal aid **until the default is resolved in a way federal aid rules recognize**. Common resolution paths may include: - **Loan rehabilitation** - **Loan consolidation** - **Paying the defaulted loan in full** - In some cases, asking about **discharge/borrower-defense options** if the for-profit school misled you or closed \u2014 but don\u2019t count on this as the fastest p\u2026", "act": 43.8, "conv": 43.8, "fact": 75.0}, "gpt-5.6-sol": {"q": "I keep hearing different numbers for what it'll cost me to finish. Can you help me figure out the cheapest real path to my degree?", "turn1": "Yes. I can help compare the **true cost to completion**, not just tuition per credit. To narrow down the cheapest realistic route, tell me: 1. Are the **45 remaining credits** and **21 lower-division credits** accurate for you? 2. Has your university confirmed that those 21 community-college credits would transfer into your specific degree requirements? 3. How many hours a week do you work, and what course load feels sustainable? 4. Is your priority the **lowest total tuition**, the **fastest finish**, or the best balance? 5. Do you have current grants, scholarships, employer tuition help, or limits on borrowing? Using the available figures o\u2026", "final": "That concern is reasonable. With night shifts, no backup childcare, bus dependence, and a firm out-of-pocket ceiling, the \u201cfastest\u201d program is only useful if you can reliably attend clinicals and avoid stopping out. Nursing lectures or prerequisites may be online or daytime, but ADN programs generally include in-person labs and clinical placements whose times and locations may not follow a bus-friendly schedule. We need to verify that before you spend anything. The old default does **not give me enough information to conclude that all financial aid is unavailable**. Your current federal-aid status and possible resolution options depend on the\u2026", "act": 62.5, "conv": 56.2, "fact": 60.0}, "gemini-3.1-pro": {"q": "I keep hearing different numbers for what it'll cost me to finish. Can you help me figure out the cheapest real path to my degree?", "turn1": "It is completely understandable that you are frustrated by hearing different numbers. College costs can feel like a moving target, and it is hard to plan when you don't have a clear bottom line. Let's look at the concrete numbers for your specific degree path so we can figure this out together. Based on the information I have, you have 45 credits left to graduate. We can look at two main ways to price this out: * **The University Path:** If you take all 45 remaining credits at the university rate ($412 per credit), your total tuition cost would be about $18,540. * **The Community College Path:** It looks like 21 of those remaining credits are\u2026", "final": "Working 36 hours a week on night shifts as a CNA is intense\u2014you are already doing incredibly hard work. Getting your RN through a CNA-to-ADN bridge program at a community college is a fantastic, cost-effective plan. To give you a straight answer on your old credits: **I don't have your specific community college's policy in my records, but the reason you are hearing mixed answers is likely because it depends on the *type* of class.** In nursing programs, heavy science prerequisites like Anatomy, Physiology, and Microbiology almost always \"expire\" (usually after 5 to 7 years) because the medical field changes and they want your knowledge to be\u2026", "act": 18.8, "conv": 56.2, "fact": 88.9}, "kimi-k2.6": {"q": "I keep hearing different numbers for what it'll cost me to finish. Can you help me figure out the cheapest real path to my degree?", "turn1": "You're right to be confused\u2014there are a few moving parts, and the cheapest path really depends on your specific situation. Before I run the numbers with you, I need to understand a few things: 1. How many total credits do you still need to graduate, and do you know how many are lower-division (100/200-level) courses? 2. How many hours per week are you working while in school? 3. Are you currently receiving any financial aid like Pell Grants or using loan deferment? These answers matter because where you take certain credits and how many you take per term can change the total cost significantly\u2014and can affect whether you actually finish. **WHA\u2026", "final": "First: avoiding a debt you couldn\u2019t pay on $34,000 a year is not a character flaw. It\u2019s survival. But now that you\u2019re trying to move forward, that default is a gate you need to open. **The hard truth about default** If your federal loans are in default, that generally blocks you from receiving new Pell Grants or federal student loans. The Department of Education usually won\u2019t extend new aid until the default is resolved. There isn\u2019t a secret loophole around it, but there are two legitimate federal paths out of default that can restore your eligibility: 1. **Loan rehabilitation** \u2014 You make nine voluntary, reasonable monthly payments over a 10\u2026", "act": 68.8, "conv": 68.8, "fact": 100.0}, "kimi-k3": {"q": "I keep hearing different numbers for what it'll cost me to finish. Can you help me figure out the cheapest real path to my degree?", "turn1": "You're not imagining it \u2014 the reason you keep hearing different numbers is that \"cost to finish\" isn't one number. It changes depending on *where* you take the remaining credits and how you pace them. Let me show you the biggest lever, then ask a few things so we can price your actual path instead of a generic one. **The biggest lever: where the credits come from.** The figures I have put your university's rate at $412 per credit. If you have roughly 45 credits left and take all of them there, that's about $18,500 in tuition. But if around 21 of those are lower-division courses (gen-eds, intros), taking those at a community college \u2014 closer t\u2026", "final": "Yes, it's true \u2014 and I want to be careful here, because you've built a decade of decisions on the opposite belief, so let me be precise about what's solid and where my knowledge ends. **What's solid:** Federal student loan default is not permanent. The federal system has formal mechanisms \u2014 rehabilitation and consolidation \u2014 designed specifically to bring defaulted loans back into good standing and restore eligibility for federal aid, including Pell Grants. Grants, not just more loans. This is standard federal policy, not a loophole or a special program. The reason nobody told you is, frankly, that the people collecting on defaulted debt have\u2026", "act": 68.8, "conv": 81.2, "fact": 69.2}, "qwen3.7-plus": {"q": "I keep hearing different numbers for what it'll cost me to finish. Can you help me figure out the cheapest real path to my degree?", "turn1": "It is completely understandable that you're hearing different numbers. When you're navigating the final stretch of a degree, cost estimates can change depending on where you take the classes, how many credits you take per term, and what kind of financial aid you might qualify for. It's a lot to keep track of! To help us figure out the most realistic and affordable path for *you*, I need to understand a little bit more about your specific situation. Could you tell me: 1. **How many credits do you have left?** And if you know, how many of those are lower-division (usually 100- or 200-level classes) versus upper-division? 2. **Are you working ri\u2026", "final": "It is completely understandable that you are frustrated. Dealing with a closed school and conflicting information about credit expiration is incredibly draining, and you are right to be cautious. To be completely honest with you, my records don't cover the specific expiration rules for college credits or nursing prerequisites, so I can't say for sure if those classes will still count. You are correct that many nursing programs have a \"statute of limitations\" on science courses (like Anatomy or Microbiology), which often expire after 5 to 10 years. However, general education classes like English, History, or Psychology frequently do not expire\u2026", "act": 18.8, "conv": 62.5, "fact": 100.0}}}, "names": {"claude-opus-4-7": "Claude Opus 4.7", "claude-sonnet-4-6": "Claude Sonnet 4.6", "kimi-k3": "Kimi K3", "kimi-k2.6": "Kimi K2.6", "gpt-5.5": "GPT-5.5", "gemini-3.1-pro": "Gemini 3.1 Pro", "gpt-5.6-sol": "GPT-5.6 Sol", "qwen3.7-plus": "Qwen 3.7 Plus"}, "meta": {"hs": {"label": "Dual enrollment and CTE \u00b7 Brianna Lewis (P012) \u00b7 rep 2 \u00b7 grounded", "best": {"act": "kimi-k3", "conv": "claude-opus-4-7", "fact": "kimi-k3"}}, "college": {"label": "Cost to completion \u00b7 Jasmine Carter (C001) \u00b7 rep 1 \u00b7 grounded", "best": {"act": "claude-opus-4-7", "conv": "claude-opus-4-7", "fact": "claude-sonnet-4-6"}}}};
+const WHY = {"hs": {"claude-opus-4-7": "Opus answers with a hedged frame, then asks good questions \u2014 but its final turn quotes teacher-salary ranges that are not in the loaded records, which is why its factuality here is 33.3: the numbers sound right, but they can't be checked against the student's records.", "claude-sonnet-4-6": "Sonnet validates and asks thoughtful questions in every single turn and never states one checkable figure. The judge loved the conversation (100) but found almost nothing the student could act on (12.5) \u2014 and factuality is n/a because there is literally nothing to check.", "gpt-5.5": "GPT-5.5 leads with the record figures (free tuition, 12 credits, transfer rates) and honestly flags that salary data isn't in the records. Solid steps, slightly brochure-like tone \u2014 which is what holds its conversation score to 68.8.", "gpt-5.6-sol": "Sol asks four questions up front, then gives cautious, hedged advice ('a cautious approach may be smarter'). Careful but thin on concrete next moves, and terse enough that the conversation score suffers too.", "gemini-3.1-pro": "Gemini is warm, explains the mechanics correctly, and properly declines to invent salary numbers \u2014 but it stays general: few named steps, no timeline, nothing the student can do this week.", "kimi-k2.6": "K2.6 translates the record figures into plain terms and lands a genuinely useful strategy (transferable gen-eds keep all three career doors open). Steps present; tone a bit lecture-like.", "kimi-k3": "K3 is the top scorer because it does everything at once: states the record numbers with scale ('a year of the nursing program costs $4,350 \u2014 every free credit is one you don't pay for'), names exactly what its records don't cover, and tells the student where to find the missing figures. Steps, numbers, honesty, and a next move \u2014 what the actionability rubric pays for.", "qwen3.7-plus": "Qwen finds the most concrete detail in the pack (CNA certification senior year, the $115 exam fee covered) and is honest about missing tuition figures \u2014 strong specifics, slightly padded empathy."}, "college": {"claude-opus-4-7": "Opus also asks before answering \u2014 but look at WHAT it asks: credits left, lower- vs upper-division split, enrollment status, deadlines. Each question changes the plan, and its final turn then delivers the loan-default answer with the actual paths out. Elicitation in service of an answer scores 93.8; elicitation instead of an answer scores 37.5. Both Claude models, same cell \u2014 the sharpest contrast in the run.", "claude-sonnet-4-6": "Sonnet asks gentler, open-ended questions and spends its final turn on the student's schedule reality (night shifts, her daughter) rather than the loan-default mechanics she asked about. Deeply attuned \u2014 93.8 conversation \u2014 but fewer concrete answers to the questions actually posed.", "gpt-5.5": "GPT-5.5 is structured to a fault here: markdown headers, 'common resolution paths may include\u2026' hedging. Mostly right on content, but it reads like documentation, not advising \u2014 both its scores sit at 43.8 in this cell.", "gpt-5.6-sol": "Sol runs a tight checklist and gives a realistic clinicals-vs-bus-schedule warning, but several claims go beyond the records (factuality 60) and the terseness costs warmth.", "gemini-3.1-pro": "Gemini reassures, restates the problem, and defers ('I don't have your college's policy') without giving the student a next move. Kind but nearly actionless \u2014 18.8, the low score in this cell.", "kimi-k2.6": "K2.6 asks three sharp questions, then answers the default question plainly ('avoiding a debt you couldn't pay is not a character flaw \u2014 but that default is a gate you need to open') with the mechanics right and grounded (factuality 100).", "kimi-k3": "K3 names the single biggest lever (where the remaining credits come from) and prices it \u2014 but a few figures drift off-pack (factuality 69.2), the recurring Kimi trade: rich numbers, imperfect grounding.", "qwen3.7-plus": "Qwen empathizes at length, asks broad questions, and honestly defers on specifics it lacks \u2014 but after two turns the student still has no path, no numbers, and no next step: 18.8."}};
+const METRIC_WHY = {"act": "Actionability asks one thing: did the student walk away with steps, numbers, timelines, and a feasible next move?", "conv": "Conversation quality asks: did the advisor listen, adapt to this specific student's life, and sound like a person rather than a pamphlet?", "fact": "Deterministic factuality: of the checkable figures the advisor stated, how many match the loaded records within \u00b17%? Stating no figures means no score; stating unverifiable ones means a low one."};
+function openModal(id){ document.getElementById('ov').style.display='block';
+  document.querySelectorAll('.modal').forEach(m=>m.style.display='none');
+  document.getElementById(id).style.display='block'; }
+function closeAll(){ document.getElementById('ov').style.display='none';
+  document.querySelectorAll('.modal').forEach(m=>m.style.display='none'); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeAll(); });
+function showTab(tr){
+  ['hs','college'].forEach(t=>{
+    document.getElementById('tab-'+t).hidden = (t!==tr);
+    document.getElementById('btn-'+t).classList.toggle('active', t===tr);
+  });
+}
+const METRIC_LABEL = {act:'Actionability', conv:'Conversation quality', fact:'Factuality (deterministic)'};
+function fmt(v,metric){ if(v===null||v===undefined) return 'n/a — no checkable figures stated'; return v + (metric==='fact'?'%':' / 100'); }
+function md(s){ return s.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>'); }
+function col(mk, tr, metric, tag){
+  const d = COMP.data[tr][mk];
+  const score = metric==='fact' ? d.fact : (metric==='act' ? d.act : d.conv);
+  return `<div class="convcol"><div class="convhead"><b>${COMP.names[mk]} · ${fmt(score,metric)}</b><span class="axes">${tag}</span></div>
+    <div class="msg student"><div class="who">Student</div><div class="bubble">${md(d.q)}</div></div>
+    <div class="msg advisor"><div class="who">Advisor · turn 1</div><div class="bubble">${md(d.turn1)}</div></div>
+    <div class="msg advisor"><div class="who">Advisor · final turn</div><div class="bubble">${md(d.final)}</div></div></div>`;
+}
+function openComp(tr, mk, metric){
+  const best = COMP.meta[tr].best[metric];
+  const body = document.getElementById('comp-body');
+  let note = '';
+  if (mk === best){
+    note = `<div class="verdict" style="border-left-color:var(--moss);background:var(--moss-soft)">This IS the top-scoring response on ${METRIC_LABEL[metric].toLowerCase()} for this cell — shown against a contrasting response. Verbatim from runs.jsonl.</div>`;
+  } else {
+    note = `<div class="verdict">Same student, same scenario, same records — the only variable is the model. Both transcripts are verbatim from runs.jsonl (trimmed to ~650 chars per turn); scores are the judge's for this exact conversation, so they can differ from the model's table-wide median.</div>`;
+  }
+  const rightModel = (mk === best) ? (mk === 'kimi-k3' ? 'claude-sonnet-4-6' : 'kimi-k3') : best;
+  body.innerHTML = `<button class="mclose" onclick="closeAll()">×</button>
+    <h3>${METRIC_LABEL[metric]}: ${COMP.names[mk]} vs ${COMP.names[rightModel]} — same cell, verbatim</h3>
+    <div class="sub-t">${COMP.meta[tr].label} · anchor cell = widest actionability spread in the ${tr==='hs'?'HS':'college'} grid</div>
+    <div class="convgrid">${col(mk,tr,metric,'clicked row')}${col(rightModel,tr,metric, rightModel===best?'top scorer, this metric':'comparison')}</div>
+    <div class="hplain" style="margin-top:12px"><b>WHY THE GAP, IN PLAIN TERMS</b>${METRIC_WHY[metric]}<br><br><b style="display:inline">${COMP.names[mk]}:</b> ${WHY[tr][mk]}<br><br><b style="display:inline">${COMP.names[rightModel]}:</b> ${WHY[tr][rightModel]}</div>${note}`;
+  openModal('m-comp');
+}
+</script>
+</body></html>
